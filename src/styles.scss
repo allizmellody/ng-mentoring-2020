@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+//$custom-app-warn:    mat-palette($mat-red);
+
+* {
+  font: 13px Roboto, "Helvetica Neue", sans-serif;
+  font-weight: 300;
+}
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.dark-toolbar {
+  background-color: #414452!important;
+}

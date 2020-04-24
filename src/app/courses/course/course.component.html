@@ -1,1 +1,10 @@
-<p>course works!</p>
+<mat-card class="course" fxLayout="row">
+  <div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-card-title fxFlex="1 1 auto">{{ item.title }}</mat-card-title>
+      <span>{{ item.duration }}</span>
+      <span>{{ item.creationDate }}</span>
+    </div>
+    <mat-card-content class="course__description">{{ item.description }}</mat-card-content>
+  </div>
+</mat-card>
