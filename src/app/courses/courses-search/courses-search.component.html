@@ -1,0 +1,8 @@
+<div class="search">
+  <mat-form-field appearance="outline" class="search__input">
+    <agmp-icon matPrefix icon="search" class="search__icon big"></agmp-icon>
+    <mat-label>Text to search</mat-label>
+    <input matInput [(ngModel)]="searchValue">
+  </mat-form-field>
+  <agmp-button text="Search" class="search__btn huge green" (click)="handleSearch()"></agmp-button>
+</div>

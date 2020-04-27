@@ -1,3 +1,8 @@
-<div class="courses-container">
+<div fxLayout="column" class="courses__container">
+  <agmp-courses-search></agmp-courses-search>
+  <agmp-button fxFlexAlign="end" text="Add course" class="courses__add-btn blue medium">
+    <agmp-icon icon="add" class="medium"></agmp-icon>
+  </agmp-button>
   <agmp-courses-list></agmp-courses-list>
+  <agmp-button class="courses__load-more white big fill">LOAD MORE</agmp-button>
 </div>

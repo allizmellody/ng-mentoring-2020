@@ -1,4 +1,4 @@
-<mat-toolbar role="heading" class="mat-primary dark-toolbar">
+<mat-toolbar class="header mat-primary">
   <agmp-logo class="header__fill-container"></agmp-logo>
 
   <span class="header__section">
@@ -6,7 +6,8 @@
     <span>User Login</span>
   </span>
   <span class="header__section">
-    <img src="../../../assets/ic-exit.svg" alt="icon-exit" class="header__icon"/>
-    <span>Log off</span>
+    <agmp-button text="Log off" class="transparent">
+      <img src="../../../assets/ic-exit.svg" alt="icon-exit" class="header__icon"/>
+    </agmp-button>
   </span>
 </mat-toolbar>

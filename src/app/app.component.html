@@ -1,10 +1,8 @@
-<div fxLayout="column" fxFlexFill>
+<div fxLayout="column" class="app">
   <agmp-header></agmp-header>
   <agmp-breadcrumbs></agmp-breadcrumbs>
-  <div fxFlex>
-    <router-outlet>
-      <agmp-courses></agmp-courses>
-    </router-outlet>
-  </div>
+  <main class="app__main">
+    <router-outlet></router-outlet>
+  </main>
   <agmp-footer></agmp-footer>
 </div>

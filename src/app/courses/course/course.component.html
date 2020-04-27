@@ -1,10 +1,22 @@
-<mat-card class="course" fxLayout="row">
-  <div fxLayout="column">
+<mat-card class="course" fxLayout="row" fxLayoutAlign="start center">
+  <div fxLayout="column" class="course__content">
     <div fxLayout="row" fxLayoutAlign="start center">
       <mat-card-title fxFlex="1 1 auto">{{ item.title }}</mat-card-title>
-      <span>{{ item.duration }}</span>
-      <span>{{ item.creationDate }}</span>
+      <span class="course__meta">
+        <agmp-icon icon="access_time"></agmp-icon>
+        {{ item.duration }}
+      </span>
+      <span class="course__meta">
+        <agmp-icon icon="today_icon"></agmp-icon>
+          {{ item.creationDate }}
+      </span>
     </div>
     <mat-card-content class="course__description">{{ item.description }}</mat-card-content>
   </div>
+  <agmp-button text="Edit" class="blue small" (click)="handleEditClick()">
+    <agmp-icon icon="edit"></agmp-icon>
+  </agmp-button>
+  <agmp-button text="Delete" class="course__pad-btn blue small" (click)="handleDeleteClick()">
+    <agmp-icon icon="delete"></agmp-icon>
+  </agmp-button>
 </mat-card>

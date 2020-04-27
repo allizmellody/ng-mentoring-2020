@@ -1,0 +1,50 @@
+.btn {
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+}
+
+:host(.blue) .btn {
+  background-color: #30b6dd;
+}
+
+:host(.green) .btn {
+  background-color: #9bc837;
+}
+
+:host(.white) .btn {
+  background-color: #fff;
+  color: #000;
+}
+
+:host(.transparent) .btn {
+  background-color: transparent;
+  font-weight: inherit;
+}
+
+:host(.small) .btn {
+  line-height: 24px;
+}
+
+:host(.medium) .btn {
+  line-height: 36px;
+  font-size: 13px;
+  padding: 0 20px;
+}
+
+:host(.big) .btn {
+  line-height: 48px;
+  font-size: 14px;
+  padding: 0 22px;
+}
+
+:host(.huge) .btn {
+  line-height: 59px;
+  font-size: 17px;
+  padding: 0 25px;
+  letter-spacing: 0.3px;
+}
+
+:host(.fill) .btn {
+  width: 100%;
+}
