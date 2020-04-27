@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'agmp-courses-search',
+  selector: 'courses-search',
   templateUrl: './courses-search.component.html',
   styleUrls: ['./courses-search.component.scss'],
 })

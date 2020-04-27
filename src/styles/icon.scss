@@ -1,18 +1,21 @@
 .icon {
   margin-right: 5px;
   vertical-align: sub;
+}
+
+.icon.small {
   width: 15px;
   height: 15px;
   font-size: 15px;
 }
 
-:host(.medium) .icon {
+.icon.medium {
   width: 18px;
   height: 18px;
   font-size: 18px;
 }
 
-:host(.big) .icon {
+.icon.big {
   width: 24px;
   height: 24px;
   font-size: 24px;

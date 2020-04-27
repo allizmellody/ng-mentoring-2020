@@ -1,8 +1,11 @@
 <div fxLayout="column" class="courses__container">
-  <agmp-courses-search></agmp-courses-search>
-  <agmp-button fxFlexAlign="end" text="Add course" class="courses__add-btn blue medium">
-    <agmp-icon icon="add" class="medium"></agmp-icon>
-  </agmp-button>
-  <agmp-courses-list></agmp-courses-list>
-  <agmp-button class="courses__load-more white big fill">LOAD MORE</agmp-button>
+  <courses-search></courses-search>
+  <button mat-button fxFlexAlign="end" class="btn blue medium courses__add-btn">
+    <mat-icon class="icon medium">add</mat-icon>
+    Add course
+  </button>
+  <courses-list></courses-list>
+  <button mat-button class="btn white big fill courses__load-more">
+    LOAD MORE
+  </button>
 </div>

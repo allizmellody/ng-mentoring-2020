@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
+import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 import { CoursesComponent } from './courses.component';
 import { CoursesListComponent } from './courses-list/courses-list.component';
 import { CourseComponent } from './course/course.component';
-import { SharedModule } from '../shared/shared.module';
 import { CoursesSearchComponent } from './courses-search/courses-search.component';
 
 @NgModule({
@@ -23,11 +23,11 @@ import { CoursesSearchComponent } from './courses-search/courses-search.componen
   imports: [
     CommonModule,
     FlexLayoutModule,
+    FormsModule,
     MatCardModule,
-    SharedModule,
     MatIconModule,
     MatInputModule,
-    FormsModule,
+    MatButtonModule,
   ],
 })
 export class CoursesModule {}

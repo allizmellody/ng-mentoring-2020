@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ICourse } from '../shared/course.model';
 
 @Component({
-  selector: 'agmp-course',
+  selector: 'course',
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.scss'],
 })

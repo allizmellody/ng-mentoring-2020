@@ -4,7 +4,7 @@ import { ICourse } from '../shared/course.model';
 import data from './data.json';
 
 @Component({
-  selector: 'agmp-courses-list',
+  selector: 'courses-list',
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss'],
 })
