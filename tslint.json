@@ -19,13 +19,11 @@
     "directive-selector": [
       true,
       "attribute",
-      "agmp",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "agmp",
       "kebab-case"
     ],
     "eofline": true,

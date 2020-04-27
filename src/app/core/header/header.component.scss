@@ -1,0 +1,16 @@
+.header {
+  font-size: 13px;
+  font-weight: 200;
+
+  &__fill-container {
+    flex: 1 1 auto;
+  }
+
+  &__section {
+    margin-left: 25px;
+  }
+
+  &__icon {
+    margin-right: 9px;
+  }
+}

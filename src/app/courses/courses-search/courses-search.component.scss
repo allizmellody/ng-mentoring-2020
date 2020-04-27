@@ -1,0 +1,16 @@
+.search {
+  display: flex;
+  align-items: center;
+
+  &__icon {
+    color: #868996
+  }
+
+  &__input {
+    width: 360px;
+  }
+
+  &__btn {
+    margin-left: 6px;
+  }
+}

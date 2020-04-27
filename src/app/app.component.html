@@ -1,4 +1,8 @@
-<agmp-header></agmp-header>
-<agmp-breadcrumbs></agmp-breadcrumbs>
-<agmp-courses-list></agmp-courses-list>
-<agmp-footer></agmp-footer>
+<div fxLayout="column" class="app">
+  <header></header>
+  <breadcrumbs></breadcrumbs>
+  <main class="app__main">
+    <router-outlet></router-outlet>
+  </main>
+  <footer></footer>
+</div>

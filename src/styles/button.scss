@@ -1,0 +1,52 @@
+.btn {
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+  flex: none;
+}
+
+.btn.blue {
+  background-color: #30b6dd;
+}
+
+.btn.green {
+  background-color: #9bc837;
+}
+
+.btn.white {
+  background-color: #fff;
+  color: #000;
+}
+
+.btn.transparent {
+  background-color: transparent;
+  font-weight: inherit;
+}
+
+.btn.small {
+  line-height: 24px;
+}
+
+.btn.medium {
+  line-height: 36px;
+  font-size: 13px;
+  padding: 0 20px;
+}
+
+.btn.big {
+  line-height: 48px;
+  font-size: 14px;
+  padding: 0 22px;
+}
+
+.btn.huge {
+  line-height: 59px;
+  font-size: 17px;
+  padding: 0 25px;
+  letter-spacing: 0.3px;
+}
+
+.btn.fill {
+  width: 100%;
+}
+

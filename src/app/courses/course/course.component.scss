@@ -1,0 +1,24 @@
+.course {
+  margin-bottom: 24px;
+
+  &__content {
+    margin-right: 88px;
+  }
+
+  &__description {
+    font-size: 14px;
+    font-weight: 400;
+    color: #525462;
+    line-height: 24px;
+  }
+
+  &__meta {
+    margin-left: 16px;
+    color: #b9bdce;
+    font-size: 11px;
+  }
+
+  &__pad-btn {
+    margin-left: 12px;
+  }
+}

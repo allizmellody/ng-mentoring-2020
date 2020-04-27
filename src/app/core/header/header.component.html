@@ -1,2 +1,13 @@
-<p>header works!</p>
-<agmp-logo></agmp-logo>
+<mat-toolbar class="header mat-primary">
+  <img src="assets/logo.png" alt="logo" class="logo"/>
+
+  <span class="header__section">
+    <img src="../../../assets/ic-user.svg" alt="icon-user" class="header__icon"/>
+    <span>User Login</span>
+  </span>
+  <span class="header__section">
+    <agmp-button text="Log off" class="transparent">
+      <img src="../../../assets/ic-exit.svg" alt="icon-exit" class="header__icon"/>
+    </agmp-button>
+  </span>
+</mat-toolbar>

@@ -1,1 +1,24 @@
-<p>course works!</p>
+<mat-card class="course" fxLayout="row" fxLayoutAlign="stretch center">
+  <div fxLayout="column" class="course__content">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-card-title fxFlex="1 1 auto">{{ item.title }}</mat-card-title>
+      <span class="course__meta">
+        <mat-icon class="icon small">access_time</mat-icon>
+        {{ item.duration }}
+      </span>
+      <span class="course__meta">
+        <mat-icon class="icon small">today_icon</mat-icon>
+          {{ item.creationDate }}
+      </span>
+    </div>
+    <mat-card-content class="course__description">{{ item.description }}</mat-card-content>
+  </div>
+  <button mat-button class="btn blue small" (click)="handleEditClick()">
+    <mat-icon class="icon small">edit</mat-icon>
+    Edit
+  </button>
+  <button mat-button class="btn blue small course__pad-btn" (click)="handleDeleteClick()">
+    <mat-icon class="icon small">delete</mat-icon>
+    Delete
+  </button>
+</mat-card>
