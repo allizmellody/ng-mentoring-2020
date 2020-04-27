@@ -6,11 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { ButtonComponent } from './button/button.component';
 import { IconComponent } from './icon/icon.component';
-import { InputComponent } from './input/input.component';
 
 @NgModule({
-  declarations: [ButtonComponent, IconComponent, InputComponent],
+  declarations: [ButtonComponent, IconComponent],
   imports: [CommonModule, MatButtonModule, MatIconModule, MatToolbarModule],
-  exports: [ButtonComponent, IconComponent, InputComponent],
+  exports: [ButtonComponent, IconComponent],
 })
 export class SharedModule {}
