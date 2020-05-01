@@ -4,6 +4,10 @@
 
   &__fill-container {
     flex: 1 1 auto;
+
+    & img {
+      vertical-align: bottom;
+    }
   }
 
   &__section {

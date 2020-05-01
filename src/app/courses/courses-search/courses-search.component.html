@@ -2,7 +2,7 @@
   <mat-form-field appearance="outline" class="search__input">
     <mat-icon matPrefix class="icon big search__icon">search</mat-icon>
     <mat-label>Text to search</mat-label>
-    <input matInput [(ngModel)]="searchValue">
+    <input matInput [(ngModel)]="searchValue" (keypress)="handleKeyPress($event)">
   </mat-form-field>
   <button mat-button class="btn huge green search__btn" (click)="handleSearch()">
     Search

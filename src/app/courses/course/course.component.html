@@ -1,10 +1,12 @@
 <mat-card [agmpStatusShadow]="item.creationDate" class="course" fxLayout="row" fxLayoutAlign="stretch center">
   <div fxLayout="column" class="course__content">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <mat-card-title fxFlex="1 1 auto">{{ item.title }}</mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="start center" class="course__header">
+      <mat-card-title class="course__title">{{ item.title | titlecase }}</mat-card-title>
+      <mat-icon *ngIf="item.topRated" class="icon course__rate">star</mat-icon>
+      <span fxFlex="1 1 auto"></span>
       <span class="course__meta">
         <mat-icon class="icon small">access_time</mat-icon>
-        {{ item.duration }}
+        {{ item.duration | duration }}
       </span>
       <span class="course__meta">
         <mat-icon class="icon small">today_icon</mat-icon>

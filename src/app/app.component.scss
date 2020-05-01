@@ -1,8 +1,11 @@
 .app {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 
   &__main {
     background-color: #f2f3f7;
     overflow: auto;
+    flex-grow: 1;
   }
 }
