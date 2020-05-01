@@ -11,6 +11,7 @@ import { CoursesComponent } from './courses.component';
 import { CoursesListComponent } from './courses-list/courses-list.component';
 import { CourseComponent } from './course/course.component';
 import { CoursesSearchComponent } from './courses-search/courses-search.component';
+import { StatusShadowDirective } from './course/status-shadow.directive';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CoursesSearchComponent } from './courses-search/courses-search.componen
     CoursesListComponent,
     CourseComponent,
     CoursesSearchComponent,
+    StatusShadowDirective,
   ],
   exports: [CoursesComponent],
   imports: [

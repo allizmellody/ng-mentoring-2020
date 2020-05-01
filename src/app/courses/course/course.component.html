@@ -1,4 +1,4 @@
-<mat-card class="course" fxLayout="row" fxLayoutAlign="stretch center">
+<mat-card [agmpStatusShadow]="item.creationDate" class="course" fxLayout="row" fxLayoutAlign="stretch center">
   <div fxLayout="column" class="course__content">
     <div fxLayout="row" fxLayoutAlign="start center">
       <mat-card-title fxFlex="1 1 auto">{{ item.title }}</mat-card-title>
@@ -8,7 +8,7 @@
       </span>
       <span class="course__meta">
         <mat-icon class="icon small">today_icon</mat-icon>
-          {{ item.creationDate }}
+          {{ item.creationDate | date:'mediumDate' }}
       </span>
     </div>
     <mat-card-content class="course__description">{{ item.description }}</mat-card-content>
