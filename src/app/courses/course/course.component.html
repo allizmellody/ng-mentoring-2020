@@ -1,7 +1,7 @@
 <mat-card [agmpStatusShadow]="item.creationDate" class="course" [ngClass]="{'course--top': item.topRated}" fxLayout="row" fxLayoutAlign="stretch center">
   <div fxLayout="column" class="course__content">
     <div fxLayout="row" fxLayoutAlign="start center" class="course__header">
-      <mat-card-title class="course__title">{{ item.title | titlecase }}</mat-card-title>
+      <mat-card-title class="course__title">{{ item.title | uppercase }}</mat-card-title>
       <mat-icon *ngIf="item.topRated" class="icon course__rate">star_border</mat-icon>
       <span fxFlex="1 1 auto"></span>
       <span class="course__meta">

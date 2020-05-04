@@ -8,7 +8,6 @@ import { ICourse } from '../shared/course.model';
   styleUrls: ['./course.component.scss'],
 })
 export class CourseComponent implements OnInit {
-  @Input() ngClass: string | string[] | Set<string> | { [klass: string]: any; };
   @Input() item: ICourse;
   @Output() delete = new EventEmitter<string>();
 
