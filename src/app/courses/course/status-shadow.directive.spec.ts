@@ -8,6 +8,9 @@ import { StatusShadowDirective } from './status-shadow.directive';
   <h2 [agmpStatusShadow]="'04/25/2020'">Upcoming. With green shadow</h2>
   <h2 [agmpStatusShadow]="'05/07/2020'">New. With blue shadow</h2>
   <h2 [agmpStatusShadow]="'01/07/2020'">Old. Without shadow</h2>
+  <h2 [agmpStatusShadow]="'date'">Invalid date value. Without shadow</h2>
+  <h2 [agmpStatusShadow]="''">Empty value. Without shadow</h2>
+  <h2 [agmpStatusShadow]="null">Null value. Without shadow</h2>
   <h2>Without directive</h2>`
 })
 class TestComponent {}
@@ -28,7 +31,7 @@ describe('StatusBorderDirective', () => {
   });
 
   it('should have three highlighted elements', () => {
-    expect(des.length).toBe(3);
+    expect(des.length).toBe(6);
   });
 
   it('should shadow 1st <h2> "155,200,55"', () => {
@@ -41,8 +44,18 @@ describe('StatusBorderDirective', () => {
     expect(boxShadow).toContain('rgba(48, 182, 221, 0.5)');
   });
 
-  it('should 3rd <h2> no shadow', () => {
+  it('should not set shadow 3rd <h2>', () => {
     const boxShadow = des[2].nativeElement.style.boxShadow;
+    expect(boxShadow).toBe('');
+  });
+
+  it('should not set shadow 4th <h2>', () => {
+    const boxShadow = des[3].nativeElement.style.boxShadow;
+    expect(boxShadow).toBe('');
+  });
+
+  it('should not set shadow 5th <h2>', () => {
+    const boxShadow = des[4].nativeElement.style.boxShadow;
     expect(boxShadow).toBe('');
   });
 

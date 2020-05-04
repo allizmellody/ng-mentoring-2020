@@ -1,6 +1,10 @@
 .course {
   margin-bottom: 24px;
 
+  &--top {
+    background-color: rgba(155,200,55,.05);
+  }
+
   &__header {
     margin-bottom: 8px;
   }
@@ -31,7 +35,6 @@
   }
 
   &__rate {
-    color: #ffeb3b;
     margin-left: 15px;
   }
 }

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'courses-search',
@@ -7,19 +8,16 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class CoursesSearchComponent implements OnInit {
   @Output() search = new EventEmitter<string>();
-  public searchValue: string;
+  public searchForm;
 
-  constructor() {}
+  constructor(private formBuilder: FormBuilder) {
+    this.searchForm = this.formBuilder.group({ input: '' });
+  }
 
   ngOnInit(): void {}
 
-  public handleSearch() {
-    this.search.emit(this.searchValue);
-  }
-
-  public handleKeyPress(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      this.handleSearch();
-    }
+  public onSubmit(data) {
+    this.search.emit(data.input);
+    this.searchForm.reset();
   }
 }

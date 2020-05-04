@@ -14,4 +14,12 @@ describe('DurationPipe', () => {
   it('transforms 120 to "2h"', () => {
     expect(pipe.transform(120)).toBe('2h ');
   });
+
+  it('transforms null to empty string', () => {
+    expect(pipe.transform(null)).toBe('');
+  });
+
+  it('transforms NaN to empty string', () => {
+    expect(pipe.transform(NaN)).toBe('');
+  });
 });
