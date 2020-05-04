@@ -1,18 +1,88 @@
-.mat-form-field-wrapper {
-  padding-bottom: 0;
-  background: #fff;
+$border-style: 1px solid #30b6dd;
+
+.mat-toolbar {
+  &.mat-accent {
+    background-color: #fff;
+    color: #000;
+  }
+
+  &.mat-primary {
+    background-color: #414452;
+    color: #fff;
+  }
 }
 
-.mat-toolbar.mat-accent {
-  background-color: #fff;
-  color: #000;
+.mat-button {
+  &.mat-accent &-focus-overlay {
+    background-color: inherit;
+  }
 }
 
-.mat-toolbar.mat-primary {
-  background-color: #414452;
-  color: #fff;
-}
+.mat-form-field {
+  &-wrapper {
+    padding-bottom: 0;
+    background: #fff;
+  }
 
-.mat-button.mat-accent .mat-button-focus-overlay {
-  background-color: inherit;
+  &.mat-form-field-appearance-outline {
+    & .mat-form-field-flex:hover {
+      & .mat-form-field-outline-start {
+        border: $border-style;
+        border-right-style: none;
+      }
+
+      & .mat-form-field-outline-end {
+        border: $border-style;
+        border-left-style: none;
+      }
+
+      & .mat-form-field-outline-gap {
+        border-top: $border-style;
+        border-bottom: $border-style;
+      }
+    }
+
+    &.mat-form-field-can-float.mat-form-field-should-float {
+      & .mat-form-field-outline-gap {
+        border-top-style: none;
+      }
+
+      & .mat-form-field-flex:hover {
+        & .mat-form-field-label {
+          color: #30b6dd;
+        }
+      }
+    }
+  }
+
+  &.mat-focused {
+    & .mat-form-field-label {
+      color: #30b6dd;
+    }
+
+    &.mat-form-field-appearance-outline {
+      & .mat-form-field-flex:hover {
+        & .mat-form-field-outline-gap {
+          border-top-style: none;
+        }
+      }
+
+      & .mat-form-field-outline-start,
+      & .mat-form-field-outline-end {
+        border: $border-style;
+      }
+
+      & .mat-form-field-outline-start {
+        border-right-style: none;
+      }
+
+      & .mat-form-field-outline-end {
+        border-left-style: none;
+      }
+
+      & .mat-form-field-outline-gap {
+        border-bottom: $border-style;
+      }
+    }
+  }
 }

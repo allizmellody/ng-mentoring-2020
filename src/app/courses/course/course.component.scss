@@ -1,6 +1,18 @@
 .course {
   margin-bottom: 24px;
 
+  &--top {
+    background-color: rgba(155,200,55,.05);
+  }
+
+  &__header {
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    margin-bottom: 0;
+  }
+
   &__content {
     margin-right: 88px;
   }
@@ -20,5 +32,9 @@
 
   &__pad-btn {
     margin-left: 12px;
+  }
+
+  &__rate {
+    margin-left: 15px;
   }
 }
