@@ -1,0 +1,24 @@
+<div class="login__page">
+  <mat-card class="login__card">
+    <mat-card-title class="login__title">Login</mat-card-title>
+    <div class="login__field-label">
+      <label for="email">Email:</label>
+      <span>*required</span>
+    </div>
+    <mat-form-field appearance="outline" class="login__input">
+      <mat-placeholder>Enter e-mail</mat-placeholder>
+      <input id="email" matInput type="text" [(ngModel)]="email">
+    </mat-form-field>
+    <div class="login__field-label">
+      <label for="password">Password:</label>
+      <span>*required</span>
+    </div>
+    <mat-form-field appearance="outline" class="login__input">
+      <mat-placeholder>Enter password</mat-placeholder>
+      <input id="password" matInput type="password" [(ngModel)]="password">
+    </mat-form-field>
+    <mat-card-footer>
+      <button mat-button class="btn blue medium" (click)="login()">Login</button>
+    </mat-card-footer>
+  </mat-card>
+</div>
