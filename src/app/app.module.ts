@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CoursesModule } from './courses/courses.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { CoursesModule } from './courses/courses.module';
     CoursesModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    AuthModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
