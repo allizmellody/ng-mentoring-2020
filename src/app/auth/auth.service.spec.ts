@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from './auth.service';
 import { User } from '../shared/user.model';
+import { LocalStorageService } from '../shared/local-storage.service';
 
 describe('AuthService', () => {
   const user = {
@@ -9,67 +10,59 @@ describe('AuthService', () => {
     firstName: 'test',
     lastName: 'test',
   };
+  const userString = JSON.stringify(user);
+  const lsTestKey = 'user';
+  const lsSpy = jasmine.createSpyObj('LocalStorageService', [
+    'getItem',
+    'setItem',
+    'removeItem',
+  ]);
 
   let service: AuthService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [{ provide: LocalStorageService, useValue: lsSpy }],
+    });
     service = TestBed.inject(AuthService);
-
-    let store = {};
-    const mockLocalStorage = {
-      getItem: (key: string): string => {
-        return key in store ? store[key] : null;
-      },
-      setItem: (key: string, value: string) => {
-        store[key] = `${value}`;
-      },
-      removeItem: (key: string) => {
-        delete store[key];
-      },
-      clear: () => {
-        store = {};
-      },
-    };
-    spyOn(localStorage, 'getItem').and.callFake(mockLocalStorage.getItem);
-    spyOn(localStorage, 'setItem').and.callFake(mockLocalStorage.setItem);
-    spyOn(localStorage, 'removeItem').and.callFake(mockLocalStorage.removeItem);
-    spyOn(localStorage, 'clear').and.callFake(mockLocalStorage.clear);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should store the user in localStorage', () => {
+  it('should call ls setItem with correct user', () => {
     expect(service.login({ email: 'test' })).toEqual(user);
-    expect(localStorage.getItem('user')).toBe(JSON.stringify(user));
+    expect(lsSpy.setItem).toHaveBeenCalledWith(lsTestKey, userString);
   });
 
-  it('should remove stored user from localStorage', () => {
-    localStorage.setItem('user', JSON.stringify(user));
+  it('should call ls removeItem', () => {
     service.logout();
 
-    expect(localStorage.getItem('user')).toBe(null);
+    expect(lsSpy.removeItem).toHaveBeenCalledWith(lsTestKey);
   });
 
-  it('should return true then there are stored user in localStorage', () => {
-    localStorage.setItem('user', JSON.stringify(user));
+  it('should return true', () => {
+    lsSpy.getItem.and.returnValue('existing user');
 
     expect(service.isAuthenticated()).toBeTruthy();
   });
 
-  it('should return false then there are no stored user in localStorage', () => {
+  it('should return false', () => {
+    lsSpy.getItem.and.returnValue(null);
+
     expect(service.isAuthenticated()).toBeFalsy();
   });
 
   it('should return stored user from localStorage', () => {
-    localStorage.setItem('user', JSON.stringify(user));
+    lsSpy.getItem.and.returnValue(userString);
 
     expect(service.getUserInfo()).toEqual(new User(user));
   });
 
   it('should return null when user not exist in localStorage', () => {
+    lsSpy.getItem.and.returnValue(null);
+
     expect(service.getUserInfo()).toBe(null);
   });
 });

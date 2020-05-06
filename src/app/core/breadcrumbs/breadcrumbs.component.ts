@@ -8,11 +8,11 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./breadcrumbs.component.scss'],
 })
 export class BreadcrumbsComponent implements OnInit {
-  public isLoggedIn: boolean;
-
   constructor(public authService: AuthService) {}
 
-  ngOnInit(): void {
-    this.isLoggedIn = this.authService.isAuthenticated();
+  ngOnInit(): void {}
+
+  public get isLoggedIn() {
+    return this.authService.isAuthenticated();
   }
 }

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import { IUser, User } from '../shared/user.model';
+import { LocalStorageService } from '../shared/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor() {}
+  constructor(public localStorageService: LocalStorageService) {}
 
   public login(user): IUser {
     const userData = {
@@ -15,7 +16,7 @@ export class AuthService {
       lastName: user.email,
     };
 
-    localStorage.setItem('user', JSON.stringify(userData));
+    this.localStorageService.setItem('user', JSON.stringify(userData));
 
     console.log(`successfully logged in as ${user.email}`);
 
@@ -23,16 +24,16 @@ export class AuthService {
   }
 
   public logout() {
-    localStorage.removeItem('user');
+    this.localStorageService.removeItem('user');
     console.log('Log out');
   }
 
   public isAuthenticated(): boolean {
-    return !!localStorage.getItem('user');
+    return !!this.localStorageService.getItem('user');
   }
 
   public getUserInfo(): IUser | null {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(this.localStorageService.getItem('user'));
 
     return user ? new User(user) : null;
   }
