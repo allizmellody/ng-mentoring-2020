@@ -1,5 +1,5 @@
 export interface IUser {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
 }
@@ -9,7 +9,7 @@ export class User implements IUser {
   public firstName: string;
   public lastName: string;
 
-  constructor(id: string, firstName: string, lastName: string) {
+  constructor({ id, firstName, lastName }) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
