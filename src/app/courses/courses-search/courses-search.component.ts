@@ -16,7 +16,7 @@ export class CoursesSearchComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public onSubmit(data) {
+  public onSubmit(data): void {
     this.search.emit(data.input);
     this.searchForm.reset();
   }

@@ -12,7 +12,7 @@ export class BreadcrumbsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public get isLoggedIn() {
+  public get isLoggedIn(): boolean {
     return this.authService.isAuthenticated();
   }
 }

@@ -23,7 +23,7 @@ export class AuthService {
     return userData;
   }
 
-  public logout() {
+  public logout(): void {
     this.localStorageService.removeItem('user');
     console.log('Log out');
   }

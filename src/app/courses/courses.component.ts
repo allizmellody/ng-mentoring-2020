@@ -28,7 +28,7 @@ export class CoursesComponent implements OnInit {
     this.courses = this.filterByTitle.transform(this.courses, searchValue);
   }
 
-  public handleDelete(id) {
+  public handleDelete(id): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         text: 'Do you really want to delete this course?',
@@ -39,7 +39,7 @@ export class CoursesComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => this.deleteCourse(res));
   }
 
-  private deleteCourse(id) {
+  private deleteCourse(id): void {
     this.coursesService.removeItem(id).then((deletedId) => {
       this.courses = this.courses.filter(
         (item: ICourse) => item.id !== deletedId

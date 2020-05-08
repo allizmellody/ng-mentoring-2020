@@ -13,11 +13,11 @@ export class CoursesService {
     return Promise.resolve(data);
   }
 
-  public createCourse() {}
+  public createCourse(): void {}
 
-  public getItemById(id: string) {}
+  public getItemById(id: string): void {}
 
-  public updateItem() {}
+  public updateItem(): void {}
 
   public removeItem(id: string): Promise<string> {
     return Promise.resolve(id);
