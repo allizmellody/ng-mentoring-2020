@@ -9,7 +9,7 @@ import { LocalStorageService } from '../shared/local-storage.service';
 export class AuthService {
   constructor(public localStorageService: LocalStorageService) {}
 
-  public login(user): IUser {
+  public login(user): Promise<IUser> {
     const userData = {
       id: user.email,
       firstName: user.email,
@@ -20,12 +20,13 @@ export class AuthService {
 
     console.log(`successfully logged in as ${user.email}`);
 
-    return userData;
+    return Promise.resolve(userData);
   }
 
-  public logout(): void {
+  public logout(): Promise<void> {
     this.localStorageService.removeItem('user');
-    console.log('Log out');
+
+    return Promise.resolve();
   }
 
   public isAuthenticated(): boolean {

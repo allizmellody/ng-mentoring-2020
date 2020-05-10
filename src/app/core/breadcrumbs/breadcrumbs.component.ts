@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../auth/auth.service';
+import { BreadcrumbService } from './breadcrumb.service';
+import { IBreadcrumb } from './breadcrumb.model';
 
 @Component({
   selector: 'breadcrumbs',
@@ -8,9 +10,18 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./breadcrumbs.component.scss'],
 })
 export class BreadcrumbsComponent implements OnInit {
-  constructor(public authService: AuthService) {}
+  public breadcrumbs: IBreadcrumb[] = [];
 
-  ngOnInit(): void {}
+  constructor(
+    public authService: AuthService,
+    private breadcrumbService: BreadcrumbService
+  ) {}
+
+  ngOnInit() {
+    this.breadcrumbService.breadcrumbChanged.subscribe((crumbs) => {
+      this.breadcrumbs = crumbs;
+    });
+  }
 
   public get isLoggedIn(): boolean {
     return this.authService.isAuthenticated();

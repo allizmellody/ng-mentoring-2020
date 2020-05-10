@@ -3,43 +3,39 @@
   font-weight: 500;
   color: #fff;
   flex: none;
-}
 
-.btn.blue {
-  background-color: #30b6dd;
+  &.blue {
+    background-color: #30b6dd;
+  }
+  &.green {
+    background-color: #9bc837;
+  }
+  &.white {
+    background-color: #fff;
+    color: #000;
+  }
+  &.gray {
+    background-color: #d9dbe3;
+    color: #5b616f;
+  }
+  &.transparent {
+    background-color: transparent;
+    font-weight: inherit;
+  }
+  &.small {
+    line-height: 24px;
+  }
+  &.medium {
+    line-height: 36px;
+    font-size: 13px;
+    padding: 0 20px;
+  }
+  &.big {
+    line-height: 43px;
+    font-size: 14px;
+    padding: 0 22px;
+  }
+  &.fill {
+    width: 100%;
+  }
 }
-
-.btn.green {
-  background-color: #9bc837;
-}
-
-.btn.white {
-  background-color: #fff;
-  color: #000;
-}
-
-.btn.transparent {
-  background-color: transparent;
-  font-weight: inherit;
-}
-
-.btn.small {
-  line-height: 24px;
-}
-
-.btn.medium {
-  line-height: 36px;
-  font-size: 13px;
-  padding: 0 20px;
-}
-
-.btn.big {
-  line-height: 43px;
-  font-size: 14px;
-  padding: 0 22px;
-}
-
-.btn.fill {
-  width: 100%;
-}
-

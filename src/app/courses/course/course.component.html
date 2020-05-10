@@ -1,9 +1,8 @@
 <mat-card [agmpStatusShadow]="item.creationDate" class="course" [ngClass]="{'course--top': item.topRated}" fxLayout="row" fxLayoutAlign="stretch center">
   <div fxLayout="column" class="course__content">
     <div fxLayout="row" fxLayoutAlign="start center" class="course__header">
-      <mat-card-title class="course__title">{{ item.title | uppercase }}</mat-card-title>
+      <mat-card-title fxFlex="1 1 auto" class="clip-text course__title">{{ item.title | uppercase }}</mat-card-title>
       <mat-icon *ngIf="item.topRated" class="icon course__rate">star_border</mat-icon>
-      <span fxFlex="1 1 auto"></span>
       <span class="course__meta">
         <mat-icon class="icon small">access_time</mat-icon>
         {{ item.duration | duration }}
@@ -15,10 +14,10 @@
     </div>
     <mat-card-content class="course__description">{{ item.description }}</mat-card-content>
   </div>
-  <button mat-button class="btn blue small" (click)="handleEditClick()">
+  <a mat-button routerLink="/courses/{{item.id}}" class="btn blue small">
     <mat-icon class="icon small">edit</mat-icon>
     Edit
-  </button>
+  </a>
   <button mat-button class="btn blue small course__pad-btn" (click)="handleDeleteClick()">
     <mat-icon class="icon small">delete</mat-icon>
     Delete
