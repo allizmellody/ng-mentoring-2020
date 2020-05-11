@@ -4,13 +4,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginPageComponent } from './auth/login-page/login-page.component';
 import { NoMatchPageComponent } from './core/no-match-page/no-match-page.component';
 import { AuthGuard } from './auth/auth.guard';
-import { CoursesModule } from './courses/courses.module';
 
 const routes: Routes = [
   { path: 'auth', component: LoginPageComponent },
   {
     path: 'courses',
-    loadChildren: () => CoursesModule,
+    loadChildren: () =>
+      import('./courses/courses.module').then((m) => m.CoursesModule),
     canLoad: [AuthGuard],
     data: { breadcrumb: 'Courses' },
   },

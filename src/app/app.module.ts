@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { CoursesModule } from './courses/courses.module';
 import { AuthModule } from './auth/auth.module';
 
 @NgModule({
@@ -15,7 +14,6 @@ import { AuthModule } from './auth/auth.module';
     BrowserModule,
     AppRoutingModule,
     CoreModule,
-    CoursesModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
     AuthModule,
