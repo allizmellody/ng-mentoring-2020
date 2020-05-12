@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, CanDeactivate, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import moment from 'moment';
 
 import { ICourse } from '../shared/course.model';
-import { CoursesService } from '../courses.service';
-import { DialogService } from '../../shared/dialog/dialog.service';
+import { CanComponentDeactivate } from '../../shared/can-deactivate.guard';
 import { BreadcrumbService } from '../../core/breadcrumbs/breadcrumb.service';
+import { CoursesService } from '../courses.service';
 
 @Component({
   selector: 'course-editor',
   templateUrl: './course-editor.component.html',
   styleUrls: ['./course-editor.component.scss'],
 })
-export class CourseEditorComponent implements OnInit, CanDeactivate<boolean> {
+export class CourseEditorComponent extends CanComponentDeactivate
+  implements OnInit {
   private isSubmitted = false;
   public title: string;
   public courseForm = this.fb.group({
@@ -31,9 +30,10 @@ export class CourseEditorComponent implements OnInit, CanDeactivate<boolean> {
     private router: Router,
     private route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
-    private coursesService: CoursesService,
-    private dialogService: DialogService
-  ) {}
+    private coursesService: CoursesService
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -76,17 +76,7 @@ export class CourseEditorComponent implements OnInit, CanDeactivate<boolean> {
     }
   }
 
-  public canDeactivate(): Observable<boolean> | boolean {
-    if (!this.courseForm.touched || this.isSubmitted) {
-      return true;
-    }
-
-    return this.dialogService
-      .open({
-        text:
-          'You have unsaved changes. By leaving the page you will lost all the data. Discard changes?',
-        confirm: 'confirm',
-      })
-      .pipe(map((result) => result === 'confirm'));
+  public canDeactivate(): boolean {
+    return !this.courseForm.dirty && !this.isSubmitted;
   }
 }

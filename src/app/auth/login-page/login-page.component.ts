@@ -21,4 +21,10 @@ export class LoginPageComponent implements OnInit {
       .login({ email: this.email, password: this.password })
       .then(() => this.router.navigate(['/courses']));
   }
+
+  public onKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.login();
+    }
+  }
 }

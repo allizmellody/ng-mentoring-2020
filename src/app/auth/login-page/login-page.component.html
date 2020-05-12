@@ -15,7 +15,7 @@
     </div>
     <mat-form-field appearance="outline" class="login__input">
       <mat-placeholder>Enter password</mat-placeholder>
-      <input id="password" matInput type="password" [(ngModel)]="password">
+      <input id="password" matInput type="password" [(ngModel)]="password" (keypress)="onKeyPress($event)">
     </mat-form-field>
     <mat-card-footer>
       <button mat-button class="btn blue medium" (click)="login()">Login</button>
