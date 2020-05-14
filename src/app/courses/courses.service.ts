@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
 
 import { ICourse } from './shared/course.model';
+import { IChangeDetector } from '../shared/change-detector.model';
 import data from './data.json';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CoursesService {
+export class CoursesService implements IChangeDetector {
+  private changed: any;
+
   constructor() {}
+
+  public get checkChanges(): any {
+    return this.changed;
+  }
+
+  public set checkChanges(value: any) {
+    this.changed = value;
+  }
 
   public getList(): Promise<ICourse[]> {
     return Promise.resolve(data);

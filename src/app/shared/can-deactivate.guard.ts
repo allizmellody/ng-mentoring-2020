@@ -1,4 +1,4 @@
-import { HostListener, Injectable } from '@angular/core';
+import { Component, Inject, Injectable, InjectionToken } from '@angular/core';
 import { Location } from '@angular/common';
 import {
   ActivatedRouteSnapshot,
@@ -7,38 +7,29 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 import { DialogService } from './dialog/dialog.service';
+import { IChangeDetector } from './change-detector.model';
 
-export abstract class CanComponentDeactivate {
-  abstract canDeactivate(): Observable<boolean> | Promise<boolean> | boolean;
-
-  @HostListener('window:beforeunload', ['$event'])
-  canLeavePage($event: any): void {
-    if (!this.canDeactivate()) {
-      $event.returnValue = true;
-    }
-  }
-}
+export const CHANGE_DETECTOR = new InjectionToken('Change Detector');
 
 @Injectable({
   providedIn: 'root',
 })
-export class CanDeactivateGuard
-  implements CanDeactivate<CanComponentDeactivate> {
+export class CanDeactivateGuard implements CanDeactivate<Component> {
   constructor(
     private location: Location,
     private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    @Inject(CHANGE_DETECTOR) private changeDetector: IChangeDetector
   ) {}
 
   canDeactivate(
-    component: CanComponentDeactivate,
+    component: Component,
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot
   ) {
-    if (!component.canDeactivate || component.canDeactivate()) {
+    if (!this.changeDetector.checkChanges) {
       return true;
     }
 

@@ -7,6 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
+import { CoursesService } from './courses/courses.service';
+import { CHANGE_DETECTOR } from './shared/can-deactivate.guard';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +20,7 @@ import { AuthModule } from './auth/auth.module';
     FlexLayoutModule,
     AuthModule,
   ],
-  providers: [],
+  providers: [{ provide: CHANGE_DETECTOR, useClass: CoursesService }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
