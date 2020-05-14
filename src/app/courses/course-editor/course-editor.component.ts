@@ -1,13 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs';
 import moment from 'moment';
 
 import { ICourse } from '../shared/course.model';
 import { CHANGE_DETECTOR } from '../../shared/can-deactivate.guard';
 import { BreadcrumbService } from '../../core/breadcrumbs/breadcrumb.service';
 import { CoursesService } from '../courses.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'course-editor',
@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
 export class CourseEditorComponent implements OnInit {
   public title: string;
   public courseForm = this.fb.group({
-    id: [],
+    // id: [],
     title: [''],
     description: [''],
     duration: [null],
@@ -35,7 +35,23 @@ export class CourseEditorComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    this.getCourseData(id).subscribe(() => this.onChanges());
+    if (id) {
+      this.coursesService.getItemById(id).subscribe((data) => {
+        this.title = data.title;
+        this.updateForm(data);
+        this.changeBreadcrumbDisplayName(data.title);
+        this.onChanges();
+      });
+    } else {
+      this.onChanges();
+    }
+  }
+
+  private updateForm(data: ICourse): void {
+    this.courseForm.patchValue({
+      ...data,
+      creationDate: moment(data.creationDate),
+    });
   }
 
   private onChanges(): void {
@@ -44,30 +60,13 @@ export class CourseEditorComponent implements OnInit {
     });
   }
 
-  private getCourseData(id: string): any {
-    if (!id) {
-      return;
-    }
-
-    return this.coursesService.getItemById(id).subscribe((data) => {
-      this.title = data.title;
-      this.courseForm.patchValue({
-        ...data,
-        creationDate: moment(data.creationDate),
-      });
-      this.changeBreadcrumbDisplayName();
-    });
-  }
-
-  private changeBreadcrumbDisplayName(): void {
-    this.breadcrumbService.changeBreadcrumb(
-      this.route.snapshot,
-      this.courseForm.value.title
-    );
+  private changeBreadcrumbDisplayName(title: string): void {
+    this.breadcrumbService.changeBreadcrumb(this.route.snapshot, title);
   }
 
   private postItem(data: ICourse): Observable<ICourse> {
     const id = this.route.snapshot.paramMap.get('id');
+
     if (id) {
       return this.coursesService.updateCourse(id, data);
     }

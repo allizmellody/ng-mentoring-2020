@@ -23,12 +23,14 @@ export class ApiService {
     return this.http.get<T>(`${this.getFullUrl(url)}?_page=${page}&_limit=10`);
   }
 
-  findByWord<T>(url: string, word: string): Observable<T> {
-    return this.http.get<T>(`${this.getFullUrl(url)}?q=${word}`);
+  findByWord<T>(url: string, word: string, page: number): Observable<T> {
+    return this.http.get<T>(
+      `${this.getFullUrl(url)}?_page=${page}&_limit=10&q=${word}`
+    );
   }
 
   put<T>(url: string, item: any): Observable<T> {
-    return this.http.put<T>(url, item);
+    return this.http.put<T>(this.getFullUrl(url), item);
   }
 
   post<T>(url: string, body: T): Observable<T> {

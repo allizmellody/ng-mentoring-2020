@@ -22,12 +22,12 @@ export class CoursesService implements IChangeDetector {
     this.changed = value;
   }
 
-  public getList(): Observable<ICourse[]> {
-    return this.apiService.get<ICourse[]>(this.url);
+  public getPage(page: number): Observable<ICourse[]> {
+    return this.apiService.getPage<ICourse[]>(this.url, page);
   }
 
-  public searchByWord(word: string): Observable<ICourse[]> {
-    return this.apiService.findByWord(this.url, word);
+  public searchByWord(word: string, page: number): Observable<ICourse[]> {
+    return this.apiService.findByWord(this.url, word, page);
   }
 
   public createCourse(data: ICourse): Observable<ICourse> {

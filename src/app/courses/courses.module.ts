@@ -18,7 +18,6 @@ import { CourseEditorComponent } from './course-editor/course-editor.component';
 import { StatusShadowDirective } from './course/status-shadow.directive';
 import { DurationPipe } from './course/duration.pipe';
 import { OrderByPipe } from './order-by.pipe';
-import { FilterByTitlePipe } from './filter-by-title.pipe';
 
 @NgModule({
   declarations: [
@@ -28,10 +27,9 @@ import { FilterByTitlePipe } from './filter-by-title.pipe';
     StatusShadowDirective,
     DurationPipe,
     OrderByPipe,
-    FilterByTitlePipe,
     CourseEditorComponent,
   ],
-  providers: [FilterByTitlePipe],
+  providers: [],
   exports: [CoursesComponent],
   imports: [
     CommonModule,
