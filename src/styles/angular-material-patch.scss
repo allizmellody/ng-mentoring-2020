@@ -1,6 +1,15 @@
 $border-style: 1px solid #30b6dd;
 
 .mat-toolbar {
+  &.mat-toolbar-single-row {
+    padding: 0;
+
+    & > div {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
   &.mat-accent {
     background-color: #fff;
     color: #000;
@@ -99,7 +108,31 @@ $border-style: 1px solid #30b6dd;
   }
 }
 
-.mat-card > .mat-card-footer {
-  margin: 12px 0 0;
-  text-align: right;
+.mat-card {
+  padding: 24px!important;
+
+  & .mat-card-footer {
+    margin: 12px 0 0;
+    text-align: right;
+
+    & :last-child {
+      margin-left: 12px;
+    }
+  }
+}
+
+.mat-calendar {
+  &-body-selected {
+    background-color: #30b6dd;
+  }
+}
+
+.mat-datepicker-toggle {
+  &-active {
+    color: #30b6dd;
+  }
+
+  & > button {
+    margin-right: -.57em;
+  }
 }

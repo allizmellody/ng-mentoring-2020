@@ -1,16 +1,20 @@
-<mat-toolbar class="header mat-primary">
-  <div class="header__fill-container">
-    <img src="assets/logo.png" alt="logo"/>
-  </div>
+<mat-toolbar class="mat-primary">
+  <div class="container header">
+    <div class="header__fill-container">
+      <a routerLink="courses">
+        <img src="assets/logo.png" alt="logo"/>
+      </a>
+    </div>
 
-  <span *ngIf="isLoggedIn" class="header__section">
+    <span *ngIf="isLoggedIn" class="header__section">
     <img src="assets/ic-user.svg" alt="icon-user" class="header__icon"/>
     <span>User Login</span>
-  </span>
-  <span *ngIf="isLoggedIn" class="header__section">
-    <button mat-button class="btn transparent medium" (click)="logout()">
-      <img src="assets/ic-exit.svg" alt="icon-exit" class="header__icon"/>
-      Log off
-    </button>
-  </span>
+    </span>
+      <span *ngIf="isLoggedIn" class="header__section">
+      <button mat-button class="btn transparent medium" (click)="logout()">
+        <img src="assets/ic-exit.svg" alt="icon-exit" class="header__icon"/>
+        Log off
+      </button>
+    </span>
+  </div>
 </mat-toolbar>

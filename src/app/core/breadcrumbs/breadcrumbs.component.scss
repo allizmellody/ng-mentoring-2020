@@ -1,3 +1,16 @@
-.breadcrumbs {
+.breadcrumb {
   font-size: 14px;
+
+  & li {
+    display: inline;
+
+    & + li:before {
+      color: #30b6dd;
+      content: " / ";
+    }
+  }
+
+  & a {
+    color: #455c74;
+  }
 }

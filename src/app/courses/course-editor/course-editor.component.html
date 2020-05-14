@@ -1,0 +1,48 @@
+<mat-card class="course-editor">
+  <mat-card-title class="clip-text course-editor__title">{{title || 'New course'}}</mat-card-title>
+  <form [formGroup]="courseForm" (ngSubmit)="onSubmit(courseForm.value)" class="course-editor__content">
+    <div class="field-label">
+      <label for="title">Title:</label>
+      <span>*required</span>
+    </div>
+    <mat-form-field appearance="outline" class="course-editor__input">
+      <input id="title" matInput formControlName="title" autocomplete="off" placeholder="Add title">
+    </mat-form-field>
+    <div class="field-label">
+      <label for="description">Description:</label>
+      <span>*required</span>
+    </div>
+    <mat-form-field appearance="outline" class="course-editor__input">
+      <textarea id="description" matInput rows="5" formControlName="description" placeholder="Add description"></textarea>
+    </mat-form-field>
+    <div class="course-editor__column-s">
+      <div class="field-label">
+        <label for="duration">Duration:</label>
+        <span>*required</span>
+      </div>
+      <mat-form-field appearance="outline" class="course-editor__input">
+        <input id="duration" matInput type="number" formControlName="duration" placeholder="minutes">
+      </mat-form-field>
+    </div>
+    <div class="course-editor__column-s">
+      <div class="field-label">
+        <label for="date">Date:</label>
+        <span>*required</span>
+      </div>
+      <mat-form-field appearance="outline" class="course-editor__input">
+        <input id="date" matInput [matDatepicker]="picker" formControlName="creationDate" placeholder="dd/mm/yyyy">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <mat-card-footer>
+      <a mat-button routerLink="/courses" class="btn big gray">
+        Cancel
+      </a>
+      <button mat-button type="submit" class="btn big green course-editor__pad-btn">
+        Save
+      </button>
+    </mat-card-footer>
+  </form>
+</mat-card>

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 
 import { ICourse } from './shared/course.model';
 import { FilterByTitlePipe } from './filter-by-title.pipe';
 import { CoursesService } from './courses.service';
-import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { DialogService } from '../shared/dialog/dialog.service';
 
 @Component({
   selector: 'courses',
@@ -17,7 +16,7 @@ export class CoursesComponent implements OnInit {
   constructor(
     private coursesService: CoursesService,
     private filterByTitle: FilterByTitlePipe,
-    public dialog: MatDialog
+    private dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -29,21 +28,21 @@ export class CoursesComponent implements OnInit {
   }
 
   public handleDelete(id): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
+    this.dialogService
+      .open({
         text: 'Do you really want to delete this course?',
         confirm: id,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((res) => this.deleteCourse(res));
+      })
+      .subscribe((res) => this.deleteCourse(res));
   }
 
   private deleteCourse(id): void {
-    this.coursesService.removeItem(id).then((deletedId) => {
-      this.courses = this.courses.filter(
-        (item: ICourse) => item.id !== deletedId
-      );
-    });
+    if (id) {
+      this.coursesService.removeItem(id).then((deletedId) => {
+        this.courses = this.courses.filter(
+          (item: ICourse) => item.id !== deletedId
+        );
+      });
+    }
   }
 }

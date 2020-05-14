@@ -1,10 +1,10 @@
 export interface ICourse {
-  id: string;
+  id?: string;
   title: string;
-  creationDate: string;
+  creationDate: any;
   duration: number;
   description: string;
-  topRated: boolean;
+  topRated?: boolean;
 }
 
 export class Course implements ICourse {

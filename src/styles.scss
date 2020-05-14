@@ -1,9 +1,11 @@
 @import "styles/angular-material-patch";
 @import "styles/button";
 @import "styles/icon";
+@import "styles/common";
 
 * {
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  box-sizing: border-box;
 }
 
 html, body { height: 100%; }

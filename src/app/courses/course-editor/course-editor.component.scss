@@ -1,0 +1,19 @@
+.course-editor {
+  max-width: 750px;
+  margin: 24px auto 0;
+  &__title {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    width: 100%;
+  }
+  &__column {
+    &-s {
+      width: 25%;
+    }
+  }
+  &__input {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+}

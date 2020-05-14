@@ -8,9 +8,16 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from './footer/footer.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
+import { NoMatchPageComponent } from './no-match-page/no-match-page.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [HeaderComponent, BreadcrumbsComponent, FooterComponent],
+  declarations: [
+    HeaderComponent,
+    BreadcrumbsComponent,
+    FooterComponent,
+    NoMatchPageComponent,
+  ],
   exports: [HeaderComponent, BreadcrumbsComponent, FooterComponent],
   imports: [
     CommonModule,
@@ -18,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
     SharedModule,
     MatToolbarModule,
     MatButtonModule,
+    RouterModule,
   ],
 })
 export class CoreModule {}

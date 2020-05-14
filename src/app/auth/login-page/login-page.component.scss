@@ -7,22 +7,6 @@
     justify-content: center;
   }
 
-  &__field-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    & > label {
-      font-weight: 500;
-      font-size: 14px;
-    }
-
-    & > span {
-      font-size: 12px;
-      color: #6c7283;
-    }
-  }
-
   &__title {
     margin-bottom: 24px;
   }

@@ -1,3 +1,10 @@
-<mat-toolbar *ngIf="isLoggedIn" class="breadcrumbs mat-accent">
-  Courses
+<mat-toolbar *ngIf="isLoggedIn && breadcrumbs.length" class="breadcrumbs mat-accent">
+  <ol class="container breadcrumb">
+    <ng-template ngFor let-route [ngForOf]="breadcrumbs">
+      <li *ngIf="!route.terminal" class="breadcrumb-item">
+        <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+      </li>
+      <li *ngIf="route.terminal" class="breadcrumb-item active" aria-current="page">{{ route.displayName }}</li>
+    </ng-template>
+  </ol>
 </mat-toolbar>

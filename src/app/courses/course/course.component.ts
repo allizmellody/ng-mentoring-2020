@@ -15,10 +15,6 @@ export class CourseComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public handleEditClick(): void {
-    console.log('Edit');
-  }
-
   public handleDeleteClick(): void {
     this.delete.emit(this.item.id);
   }
