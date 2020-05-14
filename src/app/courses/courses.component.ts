@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ICourse } from './shared/course.model';
-import { FilterByTitlePipe } from './filter-by-title.pipe';
 import { CoursesService } from './courses.service';
 import { DialogService } from '../shared/dialog/dialog.service';
 
@@ -15,16 +14,21 @@ export class CoursesComponent implements OnInit {
 
   constructor(
     private coursesService: CoursesService,
-    private filterByTitle: FilterByTitlePipe,
     private dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
-    this.coursesService.getList().then((data) => (this.courses = data));
+    this.coursesService
+      .getList()
+      .subscribe((courses: ICourse[]) => (this.courses = courses));
   }
 
   public handleSearch(searchValue): void {
-    this.courses = this.filterByTitle.transform(this.courses, searchValue);
+    this.coursesService
+      .searchByWord(searchValue)
+      .subscribe((courses: ICourse[]) => {
+        this.courses = courses;
+      });
   }
 
   public handleDelete(id): void {
@@ -37,12 +41,8 @@ export class CoursesComponent implements OnInit {
   }
 
   private deleteCourse(id): void {
-    if (id) {
-      this.coursesService.removeItem(id).then((deletedId) => {
-        this.courses = this.courses.filter(
-          (item: ICourse) => item.id !== deletedId
-        );
-      });
-    }
+    this.coursesService.removeCourse(id).subscribe(() => {
+      this.courses = this.courses.filter((item: ICourse) => item.id !== id);
+    });
   }
 }

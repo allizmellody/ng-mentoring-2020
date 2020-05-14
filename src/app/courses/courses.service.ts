@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { ICourse } from './shared/course.model';
 import { IChangeDetector } from '../shared/change-detector.model';
-import data from './data.json';
+import { ApiService } from '../shared/api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CoursesService implements IChangeDetector {
-  private changed: any;
+  private url = 'courses';
+  private changed: boolean;
 
-  constructor() {}
+  constructor(private apiService: ApiService) {}
 
   public get checkChanges(): any {
     return this.changed;
@@ -20,33 +22,27 @@ export class CoursesService implements IChangeDetector {
     this.changed = value;
   }
 
-  public getList(): Promise<ICourse[]> {
-    return Promise.resolve(data);
+  public getList(): Observable<ICourse[]> {
+    return this.apiService.get<ICourse[]>(this.url);
   }
 
-  public createCourse(item: ICourse): Promise<ICourse> {
-    console.log(`Create item with title: ${item.title}`);
-
-    return Promise.resolve(item);
+  public searchByWord(word: string): Observable<ICourse[]> {
+    return this.apiService.findByWord(this.url, word);
   }
 
-  public getItemById(id: string): Promise<ICourse> {
-    const res = data.find((course: ICourse): boolean => course.id === id);
-
-    if (res) {
-      return Promise.resolve(res);
-    }
-
-    return Promise.reject();
+  public createCourse(data: ICourse): Observable<ICourse> {
+    return this.apiService.post<ICourse>(this.url, data);
   }
 
-  public updateItem(item: ICourse): Promise<ICourse> {
-    console.log(`Update item with id: ${item.id}`);
-
-    return Promise.resolve(item);
+  public getItemById(id: string): Observable<ICourse> {
+    return this.apiService.get<ICourse>(`${this.url}/${id}`);
   }
 
-  public removeItem(id: string): Promise<string> {
-    return Promise.resolve(id);
+  public updateCourse(id: string, data: ICourse): Observable<ICourse> {
+    return this.apiService.put<ICourse>(`${this.url}/${id}`, data);
+  }
+
+  public removeCourse(id: string): Observable<string> {
+    return this.apiService.delete(this.url, id);
   }
 }

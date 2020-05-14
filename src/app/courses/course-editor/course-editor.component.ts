@@ -7,6 +7,7 @@ import { ICourse } from '../shared/course.model';
 import { CHANGE_DETECTOR } from '../../shared/can-deactivate.guard';
 import { BreadcrumbService } from '../../core/breadcrumbs/breadcrumb.service';
 import { CoursesService } from '../courses.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'course-editor',
@@ -34,7 +35,7 @@ export class CourseEditorComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    this.getCourseData(id).then(() => this.onChanges());
+    this.getCourseData(id).subscribe(() => this.onChanges());
   }
 
   private onChanges(): void {
@@ -43,12 +44,12 @@ export class CourseEditorComponent implements OnInit {
     });
   }
 
-  private getCourseData(id: string): Promise<void> {
+  private getCourseData(id: string): any {
     if (!id) {
-      return Promise.resolve();
+      return;
     }
 
-    return this.coursesService.getItemById(id).then((data) => {
+    return this.coursesService.getItemById(id).subscribe((data) => {
       this.title = data.title;
       this.courseForm.patchValue({
         ...data,
@@ -65,10 +66,10 @@ export class CourseEditorComponent implements OnInit {
     );
   }
 
-  private postItem(data: ICourse): Promise<ICourse> {
+  private postItem(data: ICourse): Observable<ICourse> {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      return this.coursesService.updateItem(data);
+      return this.coursesService.updateCourse(id, data);
     }
     return this.coursesService.createCourse(data);
   }
@@ -76,7 +77,7 @@ export class CourseEditorComponent implements OnInit {
   public onSubmit(data): void {
     if (this.courseForm.touched) {
       this.coursesService.checkChanges = false;
-      this.postItem(data).then(() => this.router.navigate(['/courses']));
+      this.postItem(data).subscribe(() => this.router.navigate(['/courses']));
     }
   }
 }
