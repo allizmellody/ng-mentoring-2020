@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ICourse } from './shared/course.model';
 import { IChangeDetector } from '../shared/change-detector.model';
 import { ApiService } from '../shared/api.service';
+import { ICoursesResponse } from './shared/courses-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,12 +23,15 @@ export class CoursesService implements IChangeDetector {
     this.changed = value;
   }
 
-  public getPage(page: number): Observable<ICourse[]> {
-    return this.apiService.getPage<ICourse[]>(this.url, page);
+  public getPage(page: number): Observable<ICoursesResponse> {
+    return this.apiService.getPage<ICoursesResponse>(this.url, page);
   }
 
-  public searchByWord(word: string, page: number): Observable<ICourse[]> {
-    return this.apiService.findByWord(this.url, word, page);
+  public searchByWord(
+    word: string,
+    page: number
+  ): Observable<ICoursesResponse> {
+    return this.apiService.findByWord<ICoursesResponse>(this.url, word, page);
   }
 
   public createCourse(data: ICourse): Observable<ICourse> {

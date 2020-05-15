@@ -7,8 +7,10 @@ import { LocalStorageService } from '../shared/local-storage.service';
 describe('AuthService', () => {
   const user = {
     id: 'test',
-    firstName: 'test',
-    lastName: 'test',
+    name: {
+      first: 'test',
+      last: 'test',
+    },
   };
   const userString = JSON.stringify(user);
   const lsTestKey = 'user';
@@ -57,12 +59,12 @@ describe('AuthService', () => {
   it('should return stored user from localStorage', () => {
     lsSpy.getItem.and.returnValue(userString);
 
-    expect(service.getUserInfo()).toEqual(new User(user));
+    expect(service.getUser()).toEqual(new User(user));
   });
 
   it('should return null when user not exist in localStorage', () => {
     lsSpy.getItem.and.returnValue(null);
 
-    expect(service.getUserInfo()).toBe(null);
+    expect(service.getUser()).toBe(null);
   });
 });

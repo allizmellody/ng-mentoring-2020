@@ -2,40 +2,63 @@ import { Injectable } from '@angular/core';
 
 import { IUser, User } from '../shared/user.model';
 import { LocalStorageService } from '../shared/local-storage.service';
+import { ApiService } from '../shared/api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(public localStorageService: LocalStorageService) {}
+  private user: IUser | null = null;
 
-  public login(user): Promise<IUser> {
-    const userData = {
-      id: user.email,
-      firstName: user.email,
-      lastName: user.email,
-    };
+  constructor(
+    private localStorageService: LocalStorageService,
+    private apiService: ApiService
+  ) {}
 
-    this.localStorageService.setItem('user', JSON.stringify(userData));
+  private setUserInfo(): Promise<void> {
+    return this.apiService
+      .post<any>('auth/userinfo')
+      .toPromise()
+      .then((val) => {
+        this.user = new User(val);
+      });
+  }
 
-    console.log(`successfully logged in as ${user.email}`);
+  public get userInfo(): IUser | null {
+    return this.user;
+  }
 
-    return Promise.resolve(userData);
+  public login(body): Promise<any> {
+    return this.apiService
+      .post('auth/login', body)
+      .toPromise()
+      .then(({ token }) => {
+        this.localStorageService.setItem('token', token);
+
+        return this.setUserInfo();
+      });
+  }
+
+  public auth(): any {
+    if (this.getToken()) {
+      return this.setUserInfo();
+    }
+
+    return Promise.resolve();
   }
 
   public logout(): Promise<void> {
-    this.localStorageService.removeItem('user');
+    this.localStorageService.removeItem('token');
+    this.user = null;
 
     return Promise.resolve();
   }
 
   public isAuthenticated(): boolean {
-    return !!this.localStorageService.getItem('user');
+    return !!this.user;
   }
 
-  public getUserInfo(): IUser | null {
-    const user = JSON.parse(this.localStorageService.getItem('user'));
-
-    return user ? new User(user) : null;
+  public getToken(): string {
+    return this.localStorageService.getItem('token') || '';
   }
 }

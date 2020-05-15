@@ -6,8 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl =
-    'http://my-json-server.typicode.com/lessarea/ng-mentoring-2020';
+  private baseUrl = 'http://ng-json.eu-4.evennode.com';
 
   constructor(private http: HttpClient) {}
 
@@ -20,12 +19,12 @@ export class ApiService {
   }
 
   getPage<T>(url: string, page): Observable<T> {
-    return this.http.get<T>(`${this.getFullUrl(url)}?_page=${page}&_limit=10`);
+    return this.http.get<T>(`${this.getFullUrl(url)}?page=${page}&limit=10`);
   }
 
   findByWord<T>(url: string, word: string, page: number): Observable<T> {
     return this.http.get<T>(
-      `${this.getFullUrl(url)}?_page=${page}&_limit=10&q=${word}`
+      `${this.getFullUrl(url)}?page=${page}&limit=10&word=${word}`
     );
   }
 
@@ -33,7 +32,7 @@ export class ApiService {
     return this.http.put<T>(this.getFullUrl(url), item);
   }
 
-  post<T>(url: string, body: T): Observable<T> {
+  post<T>(url: string, body?: T): Observable<T> {
     return this.http.post<T>(this.getFullUrl(url), body);
   }
 

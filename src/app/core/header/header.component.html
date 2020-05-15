@@ -8,7 +8,7 @@
 
     <span *ngIf="isLoggedIn" class="header__section">
     <img src="assets/ic-user.svg" alt="icon-user" class="header__icon"/>
-    <span>User Login</span>
+    <span>{{login}}</span>
     </span>
       <span *ngIf="isLoggedIn" class="header__section">
       <button mat-button class="btn transparent medium" (click)="logout()">

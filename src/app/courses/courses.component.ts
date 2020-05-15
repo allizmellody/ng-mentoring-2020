@@ -4,6 +4,7 @@ import { ICourse } from './shared/course.model';
 import { CoursesService } from './courses.service';
 import { DialogService } from '../shared/dialog/dialog.service';
 import { LoaderService } from '../shared/loader/loader.service';
+import { ICoursesResponse } from './shared/courses-response.model';
 
 @Component({
   selector: 'courses',
@@ -13,7 +14,8 @@ import { LoaderService } from '../shared/loader/loader.service';
 export class CoursesComponent implements OnInit {
   public isLoading: boolean;
   public courses: ICourse[] = [];
-  public page = 1;
+  private page = 1;
+  private count: number;
 
   constructor(
     private coursesService: CoursesService,
@@ -25,25 +27,40 @@ export class CoursesComponent implements OnInit {
     );
   }
 
+  public get showLoadMore() {
+    return this.courses.length && this.courses.length < this.count;
+  }
+
   ngOnInit(): void {
+    this.loadFirstPage();
+  }
+
+  private loadFirstPage(): void {
     this.coursesService
       .getPage(this.page)
-      .subscribe((courses: ICourse[]) => (this.courses = courses));
+      .subscribe(({ data, count }: ICoursesResponse) => {
+        this.courses = data;
+        this.count = count;
+      });
   }
 
   public handleSearch(searchValue): void {
     this.coursesService
       .searchByWord(searchValue, this.page)
-      .subscribe((courses: ICourse[]) => {
-        this.courses = courses;
+      .subscribe(({ data, count }: ICoursesResponse) => {
+        this.courses = data;
+        this.count = count;
       });
   }
 
   public loadMore(): void {
     this.page += 1;
-    this.coursesService.getPage(this.page).subscribe((data) => {
-      this.courses = [...this.courses, ...data];
-    });
+    this.coursesService
+      .getPage(this.page)
+      .subscribe(({ data, count }: ICoursesResponse) => {
+        this.courses = [...this.courses, ...data];
+        this.count = count;
+      });
   }
 
   public handleDelete(id): void {
@@ -58,6 +75,7 @@ export class CoursesComponent implements OnInit {
   private deleteCourse(id): void {
     this.coursesService.removeCourse(id).subscribe(() => {
       this.courses = this.courses.filter((item: ICourse) => item.id !== id);
+      this.count -= 1;
     });
   }
 }
