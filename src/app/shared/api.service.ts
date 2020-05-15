@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://ng-json.eu-4.evennode.com';
+  private baseUrl = 'https://ng-server.herokuapp.com';
 
   constructor(private http: HttpClient) {}
 
