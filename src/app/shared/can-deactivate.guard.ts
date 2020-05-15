@@ -29,7 +29,6 @@ export class CanDeactivateGuard implements CanDeactivate<Component> {
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot
   ) {
-    console.log(this.changeDetector.checkChanges);
     if (!this.changeDetector.checkChanges) {
       return true;
     }
