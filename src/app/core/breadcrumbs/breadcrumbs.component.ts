@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { AuthService } from '../../auth/auth.service';
 import { BreadcrumbService } from './breadcrumb.service';
 import { IBreadcrumb } from './breadcrumb.model';
 
+@UntilDestroy()
 @Component({
   selector: 'breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
@@ -18,9 +20,9 @@ export class BreadcrumbsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.breadcrumbService.breadcrumbChanged.subscribe((crumbs) => {
-      this.breadcrumbs = crumbs;
-    });
+    this.breadcrumbService.breadcrumbChanged
+      .pipe(untilDestroyed(this))
+      .subscribe((crumbs) => (this.breadcrumbs = crumbs));
   }
 
   public get isLoggedIn(): boolean {

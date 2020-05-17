@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { filter } from 'rxjs/operators';
 
 import { ICourse } from './shared/course.model';
 import { CoursesService } from './courses.service';
@@ -6,6 +8,7 @@ import { DialogService } from '../shared/dialog/dialog.service';
 import { LoaderService } from '../shared/loader/loader.service';
 import { ICoursesResponse } from './shared/courses-response.model';
 
+@UntilDestroy()
 @Component({
   selector: 'courses',
   templateUrl: './courses.component.html',
@@ -22,9 +25,9 @@ export class CoursesComponent implements OnInit {
     private dialogService: DialogService,
     private loaderService: LoaderService
   ) {
-    loaderService.isLoading.subscribe(
-      (value: boolean) => (this.isLoading = value)
-    );
+    loaderService.isLoading
+      .pipe(untilDestroyed(this))
+      .subscribe((value: boolean) => (this.isLoading = value));
   }
 
   public get showLoadMore() {
@@ -32,12 +35,9 @@ export class CoursesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadFirstPage();
-  }
-
-  private loadFirstPage(): void {
     this.coursesService
       .getPage(this.page)
+      .pipe(untilDestroyed(this))
       .subscribe(({ data, count }: ICoursesResponse) => {
         this.courses = data;
         this.count = count;
@@ -47,6 +47,7 @@ export class CoursesComponent implements OnInit {
   public handleSearch(searchValue): void {
     this.coursesService
       .searchByWord(searchValue, this.page)
+      .pipe(untilDestroyed(this))
       .subscribe(({ data, count }: ICoursesResponse) => {
         this.courses = data;
         this.count = count;
@@ -57,6 +58,7 @@ export class CoursesComponent implements OnInit {
     this.page += 1;
     this.coursesService
       .getPage(this.page)
+      .pipe(untilDestroyed(this))
       .subscribe(({ data, count }: ICoursesResponse) => {
         this.courses = [...this.courses, ...data];
         this.count = count;
@@ -69,13 +71,20 @@ export class CoursesComponent implements OnInit {
         text: 'Do you really want to delete this course?',
         confirm: id,
       })
+      .pipe(
+        untilDestroyed(this),
+        filter((confirm) => confirm)
+      )
       .subscribe((res) => this.deleteCourse(res));
   }
 
   private deleteCourse(id): void {
-    this.coursesService.removeCourse(id).subscribe(() => {
-      this.count -= 1;
-      this.courses = this.courses.filter((item: ICourse) => item.id !== id);
-    });
+    this.coursesService
+      .removeCourse(id)
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this.count -= 1;
+        this.courses = this.courses.filter((item: ICourse) => item.id !== id);
+      });
   }
 }

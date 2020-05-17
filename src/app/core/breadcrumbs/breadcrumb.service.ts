@@ -5,9 +5,11 @@ import {
   Event,
   NavigationEnd,
 } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { IBreadcrumb } from './breadcrumb.model';
 
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -15,7 +17,7 @@ export class BreadcrumbService {
   public breadcrumbChanged = new EventEmitter<IBreadcrumb[]>(false);
 
   constructor(private router: Router) {
-    this.router.events.subscribe((routeEvent) => {
+    this.router.events.pipe(untilDestroyed(this)).subscribe((routeEvent) => {
       this.onRouteEvent(routeEvent);
     });
   }

@@ -1,22 +1,34 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+} from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'courses-search',
   templateUrl: './courses-search.component.html',
   styleUrls: ['./courses-search.component.scss'],
 })
 export class CoursesSearchComponent implements OnInit {
+  public keyUp = new Subject<KeyboardEvent>();
   @Output() search = new EventEmitter<string>();
-  public searchForm;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.searchForm = this.formBuilder.group({ input: '' });
-  }
+  constructor() {}
 
-  ngOnInit(): void {}
-
-  public onSubmit(data): void {
-    this.search.emit(data.input);
+  ngOnInit(): void {
+    this.keyUp
+      .pipe(
+        untilDestroyed(this),
+        map((event: any) => event.target.value),
+        filter((value: string) => value.length >= 3),
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe((value: string) => this.search.emit(value));
   }
 }
