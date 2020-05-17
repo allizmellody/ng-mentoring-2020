@@ -6,14 +6,20 @@
       <span>*required</span>
     </div>
     <mat-form-field appearance="outline" class="course-editor__input">
-      <input id="title" matInput formControlName="title" autocomplete="off" placeholder="Add title">
+      <input matInput id="title" formControlName="title" autocomplete="off" placeholder="Add title" [errorStateMatcher]="matcher">
+      <mat-error *ngIf="isFieldValid('title')">
+        Please enter title
+      </mat-error>
     </mat-form-field>
     <div class="field-label">
       <label for="description">Description:</label>
       <span>*required</span>
     </div>
     <mat-form-field appearance="outline" class="course-editor__input">
-      <textarea id="description" matInput rows="5" formControlName="description" placeholder="Add description"></textarea>
+      <textarea matInput id="description" rows="5" placeholder="Add description" formControlName="description" [errorStateMatcher]="matcher"></textarea>
+      <mat-error *ngIf="isFieldValid('description')">
+        Please enter description
+      </mat-error>
     </mat-form-field>
     <div class="course-editor__column-s">
       <div class="field-label">
@@ -21,7 +27,10 @@
         <span>*required</span>
       </div>
       <mat-form-field appearance="outline" class="course-editor__input">
-        <input id="duration" matInput type="number" formControlName="duration" placeholder="minutes">
+        <input matInput id="duration" type="number" placeholder="minutes" formControlName="duration" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="isFieldValid('duration')">
+          Please enter duration
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="course-editor__column-s">
@@ -29,10 +38,13 @@
         <label for="date">Date:</label>
         <span>*required</span>
       </div>
-      <mat-form-field appearance="outline" class="course-editor__input">
-        <input id="date" matInput [matDatepicker]="picker" formControlName="creationDate" placeholder="dd/mm/yyyy">
+      <mat-form-field appearance="outline" class="course-editor__input" (click)="picker.open()">
+        <input matInput readonly id="date" [matDatepicker]="picker" placeholder="dd/mm/yyyy" formControlName="creationDate" [errorStateMatcher]="matcher">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="isFieldValid('creationDate')">
+          Please enter creation date
+        </mat-error>
       </mat-form-field>
     </div>
 

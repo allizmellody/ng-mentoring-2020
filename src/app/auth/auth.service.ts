@@ -28,7 +28,7 @@ export class AuthService {
     return this.user;
   }
 
-  public login(body): Promise<any> {
+  public login(body): Promise<void> {
     return this.apiService
       .post('auth/login', body)
       .toPromise()
@@ -39,7 +39,7 @@ export class AuthService {
       });
   }
 
-  public auth(): any {
+  public auth(): Promise<void> {
     if (this.getToken()) {
       return this.setUserInfo();
     }
@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    return !!this.user;
+    return Boolean(this.user);
   }
 
   public getToken(): string {

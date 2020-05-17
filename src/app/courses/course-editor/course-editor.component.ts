@@ -1,6 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroupDirective,
+  NgForm,
+  Validators,
+} from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { Observable } from 'rxjs';
 import moment from 'moment';
 
@@ -9,6 +16,16 @@ import { CHANGE_DETECTOR } from '../../shared/can-deactivate.guard';
 import { BreadcrumbService } from '../../core/breadcrumbs/breadcrumb.service';
 import { CoursesService } from '../courses.service';
 
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
+    const isSubmitted = form && form.submitted;
+    return Boolean(control && control.invalid && isSubmitted);
+  }
+}
+
 @Component({
   selector: 'course-editor',
   templateUrl: './course-editor.component.html',
@@ -16,12 +33,12 @@ import { CoursesService } from '../courses.service';
 })
 export class CourseEditorComponent implements OnInit {
   public title: string;
+  public matcher = new MyErrorStateMatcher();
   public courseForm = this.fb.group({
-    // id: [],
-    title: [''],
-    description: [''],
-    duration: [null],
-    creationDate: [''],
+    title: ['', Validators.required],
+    description: ['', Validators.required],
+    duration: [null, [Validators.required, Validators.pattern(/\d/)]],
+    creationDate: ['', Validators.required],
   });
 
   constructor(
@@ -34,27 +51,25 @@ export class CourseEditorComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+    this.subscribeFormChanges();
 
     if (id) {
       this.coursesService.getItemById(id).subscribe((data) => {
         this.title = data.title;
         this.updateForm(data);
         this.changeBreadcrumbDisplayName(data.title);
-        this.onChanges();
       });
-    } else {
-      this.onChanges();
     }
   }
 
   private updateForm(data: ICourse): void {
-    this.courseForm.patchValue({
-      ...data,
-      creationDate: moment(data.creationDate),
-    });
+    this.courseForm.patchValue(
+      { ...data, creationDate: moment(data.creationDate) },
+      { emitEvent: false }
+    );
   }
 
-  private onChanges(): void {
+  private subscribeFormChanges(): void {
     this.courseForm.valueChanges.subscribe(() => {
       this.coursesService.checkChanges = true;
     });
@@ -73,8 +88,13 @@ export class CourseEditorComponent implements OnInit {
     return this.coursesService.createCourse(data);
   }
 
+  public isFieldValid(path: string): boolean {
+    return this.courseForm.get(path).hasError('required');
+  }
+
   public onSubmit(data): void {
-    if (this.courseForm.touched) {
+    console.log(this.courseForm.value);
+    if (this.courseForm.valid) {
       this.coursesService.checkChanges = false;
       this.postItem(data).subscribe(() => this.router.navigate(['/courses']));
     }

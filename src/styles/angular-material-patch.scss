@@ -1,4 +1,5 @@
 $border-style: 1px solid #30b6dd;
+$border-invalid-style: 1px solid #f44336;
 
 .mat-toolbar {
   &.mat-toolbar-single-row {
@@ -42,20 +43,70 @@ $border-style: 1px solid #30b6dd;
   }
 
   &.mat-form-field-appearance-outline {
+    &.mat-form-field-invalid {
+      & .mat-form-field-flex:hover {
+        & .mat-form-field-outline-start,
+        & .mat-form-field-outline-end,
+        & .mat-form-field-outline-gap {
+          border: $border-invalid-style;
+        }
+
+        & .mat-form-field-outline-start,
+        & .mat-form-field-outline-gap {
+          border-right-style: none;
+        }
+
+        & .mat-form-field-outline-end,
+        & .mat-form-field-outline-gap {
+          border-left-style: none;
+        }
+      }
+
+      &.mat-focused {
+        & .mat-form-field-label {
+          color: #f44336;
+        }
+
+        & .mat-form-field-flex:hover {
+          & .mat-form-field-outline-gap {
+            border-top-style: none;
+          }
+        }
+
+        & .mat-form-field-outline-start,
+        & .mat-form-field-outline-end {
+          border: $border-invalid-style;
+        }
+
+        & .mat-form-field-outline-start {
+          border-right-style: none;
+        }
+
+        & .mat-form-field-outline-end {
+          border-left-style: none;
+        }
+
+        & .mat-form-field-outline-gap {
+          border-bottom: $border-style;
+        }
+      }
+    }
+
     & .mat-form-field-flex:hover {
-      & .mat-form-field-outline-start {
+      & .mat-form-field-outline-start,
+      & .mat-form-field-outline-end,
+      & .mat-form-field-outline-gap {
         border: $border-style;
+      }
+
+      & .mat-form-field-outline-start,
+      & .mat-form-field-outline-gap {
         border-right-style: none;
       }
 
-      & .mat-form-field-outline-end {
-        border: $border-style;
-        border-left-style: none;
-      }
-
+      & .mat-form-field-outline-end,
       & .mat-form-field-outline-gap {
-        border-top: $border-style;
-        border-bottom: $border-style;
+        border-left-style: none;
       }
     }
 
@@ -71,17 +122,23 @@ $border-style: 1px solid #30b6dd;
       }
     }
 
+    & .mat-form-field-outline-thick {
+      & .mat-form-field-outline-start,
+      & .mat-form-field-outline-end,
+      & .mat-form-field-outline-gap {
+        border-width: 1px;
+      }
+    }
+
     .mat-form-field-infix {
       padding: .8em 0;
     }
-  }
 
-  &.mat-focused {
-    & .mat-form-field-label {
-      color: #30b6dd;
-    }
+    &.mat-focused {
+      & .mat-form-field-label {
+        color: #30b6dd;
+      }
 
-    &.mat-form-field-appearance-outline {
       & .mat-form-field-flex:hover {
         & .mat-form-field-outline-gap {
           border-top-style: none;

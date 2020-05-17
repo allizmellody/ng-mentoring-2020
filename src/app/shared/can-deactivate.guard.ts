@@ -43,6 +43,13 @@ export class CanDeactivateGuard implements CanDeactivate<Component> {
           'You have unsaved changes! If you leave, your changes will be lost.',
         confirm: 'confirm',
       })
-      .pipe(map((result) => result === 'confirm'));
+      .pipe(
+        map((result) => {
+          if (result === 'confirm') {
+            this.changeDetector.checkChanges = false;
+            return true;
+          }
+        })
+      );
   }
 }

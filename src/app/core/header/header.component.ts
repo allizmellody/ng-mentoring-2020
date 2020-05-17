@@ -14,8 +14,13 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {}
 
   public get login(): string {
-    const { firstName, lastName } = this.authService.userInfo || {};
-    return firstName + ' ' + lastName;
+    const userInfo = this.authService.userInfo;
+
+    if (!userInfo) {
+      return '';
+    }
+
+    return userInfo.firstName + ' ' + userInfo.lastName;
   }
 
   public get isLoggedIn(): boolean {

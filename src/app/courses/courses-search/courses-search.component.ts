@@ -18,6 +18,5 @@ export class CoursesSearchComponent implements OnInit {
 
   public onSubmit(data): void {
     this.search.emit(data.input);
-    this.searchForm.reset();
   }
 }

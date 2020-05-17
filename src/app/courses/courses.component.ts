@@ -74,8 +74,8 @@ export class CoursesComponent implements OnInit {
 
   private deleteCourse(id): void {
     this.coursesService.removeCourse(id).subscribe(() => {
-      this.courses = this.courses.filter((item: ICourse) => item.id !== id);
       this.count -= 1;
+      this.courses = this.courses.filter((item: ICourse) => item.id !== id);
     });
   }
 }
