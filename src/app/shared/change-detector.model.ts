@@ -1,3 +1,3 @@
 export interface IChangeDetector {
-  checkChanges(): boolean;
+  checkChanges: boolean;
 }

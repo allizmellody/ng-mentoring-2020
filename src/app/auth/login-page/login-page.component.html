@@ -1,13 +1,18 @@
 <div class="login__page">
+  <div class="login__note">
+    login: <b>Olsen</b> password: <b>in</b>
+    <span class="login__note-divider"> or </span>
+    login: <b>Hobbs</b> password: <b>sit</b>
+  </div>
   <mat-card class="login__card">
-    <mat-card-title class="login__title">Login</mat-card-title>
+    <mat-card-title class="login__title">Sign in</mat-card-title>
     <div class="field-label">
-      <label for="email">Email:</label>
+      <label for="login">Login:</label>
       <span>*required</span>
     </div>
     <mat-form-field appearance="outline" class="login__input">
-      <mat-placeholder>Enter e-mail</mat-placeholder>
-      <input id="email" matInput type="text" [(ngModel)]="email">
+      <mat-placeholder>Enter login</mat-placeholder>
+      <input id="login" matInput type="text" [(ngModel)]="userLogin">
     </mat-form-field>
     <div class="field-label">
       <label for="password">Password:</label>

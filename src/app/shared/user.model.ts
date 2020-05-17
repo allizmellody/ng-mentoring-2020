@@ -9,9 +9,9 @@ export class User implements IUser {
   public firstName: string;
   public lastName: string;
 
-  constructor({ id, firstName, lastName }) {
+  constructor({ id, name: { first, last } }) {
     this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstName = first;
+    this.lastName = last;
   }
 }

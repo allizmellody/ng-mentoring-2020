@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ICourse } from './shared/course.model';
-import { FilterByTitlePipe } from './filter-by-title.pipe';
 import { CoursesService } from './courses.service';
 import { DialogService } from '../shared/dialog/dialog.service';
+import { LoaderService } from '../shared/loader/loader.service';
+import { ICoursesResponse } from './shared/courses-response.model';
 
 @Component({
   selector: 'courses',
@@ -11,20 +12,55 @@ import { DialogService } from '../shared/dialog/dialog.service';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
+  public isLoading: boolean;
   public courses: ICourse[] = [];
+  private page = 1;
+  private count: number;
 
   constructor(
     private coursesService: CoursesService,
-    private filterByTitle: FilterByTitlePipe,
-    private dialogService: DialogService
-  ) {}
+    private dialogService: DialogService,
+    private loaderService: LoaderService
+  ) {
+    loaderService.isLoading.subscribe(
+      (value: boolean) => (this.isLoading = value)
+    );
+  }
+
+  public get showLoadMore() {
+    return this.courses.length && this.courses.length < this.count;
+  }
 
   ngOnInit(): void {
-    this.coursesService.getList().then((data) => (this.courses = data));
+    this.loadFirstPage();
+  }
+
+  private loadFirstPage(): void {
+    this.coursesService
+      .getPage(this.page)
+      .subscribe(({ data, count }: ICoursesResponse) => {
+        this.courses = data;
+        this.count = count;
+      });
   }
 
   public handleSearch(searchValue): void {
-    this.courses = this.filterByTitle.transform(this.courses, searchValue);
+    this.coursesService
+      .searchByWord(searchValue, this.page)
+      .subscribe(({ data, count }: ICoursesResponse) => {
+        this.courses = data;
+        this.count = count;
+      });
+  }
+
+  public loadMore(): void {
+    this.page += 1;
+    this.coursesService
+      .getPage(this.page)
+      .subscribe(({ data, count }: ICoursesResponse) => {
+        this.courses = [...this.courses, ...data];
+        this.count = count;
+      });
   }
 
   public handleDelete(id): void {
@@ -37,12 +73,9 @@ export class CoursesComponent implements OnInit {
   }
 
   private deleteCourse(id): void {
-    if (id) {
-      this.coursesService.removeItem(id).then((deletedId) => {
-        this.courses = this.courses.filter(
-          (item: ICourse) => item.id !== deletedId
-        );
-      });
-    }
+    this.coursesService.removeCourse(id).subscribe(() => {
+      this.count -= 1;
+      this.courses = this.courses.filter((item: ICourse) => item.id !== id);
+    });
   }
 }

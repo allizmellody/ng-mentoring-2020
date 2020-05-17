@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'login-page',
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent implements OnInit {
-  public email: string;
+  public userLogin: string;
   public password: string;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -18,7 +18,7 @@ export class LoginPageComponent implements OnInit {
 
   public login(): void {
     this.authService
-      .login({ email: this.email, password: this.password })
+      .login({ login: this.userLogin, password: this.password })
       .then(() => this.router.navigate(['/courses']));
   }
 
