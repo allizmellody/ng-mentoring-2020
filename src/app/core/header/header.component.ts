@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '../../auth/auth.service';
@@ -18,11 +18,9 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.authService.user
-      .pipe(
-        untilDestroyed(this),
-        filter((value) => Boolean(value))
-      )
+    this.authService
+      .getUserInfo()
+      .pipe(filter((value) => Boolean(value)))
       .subscribe(
         (user: IUser) => (this.userLogin = user.firstName + ' ' + user.lastName)
       );

@@ -46,13 +46,13 @@ export class CanDeactivateGuard implements CanDeactivate<Component> {
         confirm: 'confirm',
       })
       .pipe(
-        untilDestroyed(this),
         map((result) => {
           if (result === 'confirm') {
             this.changeDetector.checkChanges = false;
             return true;
           }
-        })
+        }),
+        untilDestroyed(this)
       );
   }
 }

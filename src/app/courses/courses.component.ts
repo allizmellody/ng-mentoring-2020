@@ -7,6 +7,7 @@ import { CoursesService } from './courses.service';
 import { DialogService } from '../shared/dialog/dialog.service';
 import { LoaderService } from '../shared/loader/loader.service';
 import { ICoursesResponse } from './shared/courses-response.model';
+import { Observable } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -15,7 +16,7 @@ import { ICoursesResponse } from './shared/courses-response.model';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  public isLoading: boolean;
+  public isLoading: Observable<boolean>;
   public courses: ICourse[] = [];
   private page = 1;
   private count: number;
@@ -25,9 +26,7 @@ export class CoursesComponent implements OnInit {
     private dialogService: DialogService,
     private loaderService: LoaderService
   ) {
-    loaderService.isLoading
-      .pipe(untilDestroyed(this))
-      .subscribe((value: boolean) => (this.isLoading = value));
+    this.isLoading = loaderService.isLoading;
   }
 
   public get showLoadMore() {
@@ -72,8 +71,8 @@ export class CoursesComponent implements OnInit {
         confirm: id,
       })
       .pipe(
-        untilDestroyed(this),
-        filter((confirm) => confirm)
+        filter((confirm) => confirm),
+        untilDestroyed(this)
       )
       .subscribe((res) => this.deleteCourse(res));
   }

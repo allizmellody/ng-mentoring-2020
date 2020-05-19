@@ -39,7 +39,7 @@ export class CourseEditorComponent implements OnInit {
   public courseForm = this.fb.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
-    duration: [null, [Validators.required, Validators.pattern(/\d/)]],
+    duration: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
     creationDate: ['', Validators.required],
   });
 

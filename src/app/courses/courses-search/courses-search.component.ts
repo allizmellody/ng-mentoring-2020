@@ -23,11 +23,11 @@ export class CoursesSearchComponent implements OnInit {
   ngOnInit(): void {
     this.keyUp
       .pipe(
-        untilDestroyed(this),
         map((event: any) => event.target.value),
-        filter((value: string) => value.length >= 3),
+        filter((value: string) => !value || value.length >= 3),
         debounceTime(300),
-        distinctUntilChanged()
+        distinctUntilChanged(),
+        untilDestroyed(this)
       )
       .subscribe((value: string) => this.search.emit(value));
   }

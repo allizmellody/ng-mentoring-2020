@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { IUser, User } from '../shared/user.model';
 import { LocalStorageService } from '../shared/local-storage.service';
@@ -9,7 +9,7 @@ import { ApiService } from '../shared/api.service';
   providedIn: 'root',
 })
 export class AuthService {
-  public user: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
+  private user: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -23,6 +23,10 @@ export class AuthService {
       .then((val) => {
         this.user.next(new User(val));
       });
+  }
+
+  public getUserInfo(): Observable<IUser> {
+    return this.user.asObservable();
   }
 
   public login(body): Promise<void> {
