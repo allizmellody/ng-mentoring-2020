@@ -172,7 +172,7 @@ $border-invalid-style: 1px solid #f44336;
     margin: 12px 0 0;
     text-align: right;
 
-    & :last-child {
+    & .mat-button:last-child {
       margin-left: 12px;
     }
   }
@@ -196,4 +196,8 @@ $border-invalid-style: 1px solid #f44336;
 
 .mat-progress-spinner circle, .mat-spinner circle {
   stroke: #30b6dd;
+}
+
+.mat-error {
+  font-size: 75%;
 }

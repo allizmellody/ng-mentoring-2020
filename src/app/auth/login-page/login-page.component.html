@@ -6,24 +6,28 @@
   </div>
   <mat-card class="login__card">
     <mat-card-title class="login__title">Sign in</mat-card-title>
-    <div class="field-label">
-      <label for="login">Login:</label>
-      <span>*required</span>
-    </div>
-    <mat-form-field appearance="outline" class="login__input">
-      <mat-placeholder>Enter login</mat-placeholder>
-      <input id="login" matInput type="text" [(ngModel)]="userLogin">
-    </mat-form-field>
-    <div class="field-label">
-      <label for="password">Password:</label>
-      <span>*required</span>
-    </div>
-    <mat-form-field appearance="outline" class="login__input">
-      <mat-placeholder>Enter password</mat-placeholder>
-      <input id="password" matInput type="password" [(ngModel)]="password" (keypress)="onKeyPress($event)">
-    </mat-form-field>
-    <mat-card-footer>
-      <button mat-button class="btn blue medium" (click)="login()">Login</button>
-    </mat-card-footer>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
+      <div class="field-label">
+        <label for="login">Login:</label>
+        <span>*required</span>
+      </div>
+      <mat-form-field appearance="outline" class="login__input">
+        <mat-placeholder>Enter login</mat-placeholder>
+        <input id="login" matInput type="text" formControlName="login" [errorStateMatcher]="matcher">
+      </mat-form-field>
+      <div class="field-label">
+        <label for="password">Password:</label>
+        <span>*required</span>
+      </div>
+      <mat-form-field appearance="outline" class="login__input">
+        <mat-placeholder>Enter password</mat-placeholder>
+        <input id="password" matInput type="password" formControlName="password" [errorStateMatcher]="matcher">
+      </mat-form-field>
+      <mat-card-footer>
+        <button mat-button type="submit" [disabled]="loginForm.invalid" class="btn blue medium">
+          Login
+        </button>
+      </mat-card-footer>
+    </form>
   </mat-card>
 </div>

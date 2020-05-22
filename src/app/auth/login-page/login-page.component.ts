@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { FormErrorStateMatcher } from 'src/app/shared/error-state-matcher';
 
 @Component({
   selector: 'login-page',
@@ -9,22 +11,25 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent implements OnInit {
-  public userLogin: string;
-  public password: string;
+  public matcher = new FormErrorStateMatcher();
+  public loginForm = this.fb.group({
+    login: ['', Validators.required],
+    password: ['', Validators.required],
+  });
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {}
 
-  public login(): void {
-    this.authService
-      .login({ login: this.userLogin, password: this.password })
-      .then(() => this.router.navigate(['/courses']));
-  }
-
-  public onKeyPress(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      this.login();
+  public onSubmit(data): void {
+    if (this.loginForm.valid) {
+      this.authService
+        .login(data)
+        .then(() => this.router.navigate(['/courses']));
     }
   }
 }

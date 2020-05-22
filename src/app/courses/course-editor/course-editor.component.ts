@@ -1,13 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators,
-} from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import moment from 'moment';
@@ -17,16 +10,6 @@ import { CHANGE_DETECTOR } from '../../shared/can-deactivate.guard';
 import { BreadcrumbService } from '../../core/breadcrumbs/breadcrumb.service';
 import { CoursesService } from '../courses.service';
 
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return Boolean(control && control.invalid && isSubmitted);
-  }
-}
-
 @UntilDestroy()
 @Component({
   selector: 'course-editor',
@@ -35,12 +18,11 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CourseEditorComponent implements OnInit {
   public title: string;
-  public matcher = new MyErrorStateMatcher();
   public courseForm = this.fb.group({
-    title: ['', Validators.required],
-    description: ['', Validators.required],
-    duration: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-    creationDate: ['', Validators.required],
+    title: ['', [Validators.required, Validators.maxLength(50)]],
+    description: ['', [Validators.required, Validators.maxLength(500)]],
+    duration: [null],
+    creationDate: [moment()],
   });
 
   constructor(
@@ -69,7 +51,7 @@ export class CourseEditorComponent implements OnInit {
 
   private updateForm(data: ICourse): void {
     this.courseForm.patchValue(
-      { ...data, creationDate: moment(data.creationDate) },
+      { ...data, creationDate: data.creationDate },
       { emitEvent: false }
     );
   }
@@ -93,8 +75,10 @@ export class CourseEditorComponent implements OnInit {
     return this.coursesService.createCourse(data);
   }
 
-  public isFieldValid(path: string): boolean {
-    return this.courseForm.get(path).hasError('required');
+  public isFieldInvalid(fieldName: string): boolean {
+    const field = this.courseForm.get(fieldName);
+
+    return field.touched && this.courseForm.get(fieldName).invalid;
   }
 
   public onSubmit(data): void {
