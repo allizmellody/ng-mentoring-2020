@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import moment from 'moment';
 
 import { ICourse } from '../shared/course.model';
 import { CHANGE_DETECTOR } from '../../shared/can-deactivate.guard';
@@ -22,7 +21,7 @@ export class CourseEditorComponent implements OnInit {
     title: ['', [Validators.required, Validators.maxLength(50)]],
     description: ['', [Validators.required, Validators.maxLength(500)]],
     duration: [null],
-    creationDate: [moment()],
+    creationDate: [null],
   });
 
   constructor(
@@ -78,7 +77,9 @@ export class CourseEditorComponent implements OnInit {
   public isFieldInvalid(fieldName: string): boolean {
     const field = this.courseForm.get(fieldName);
 
-    return field.touched && this.courseForm.get(fieldName).invalid;
+    let b = field.touched && field.invalid;
+    console.log(b);
+    return b;
   }
 
   public onSubmit(data): void {

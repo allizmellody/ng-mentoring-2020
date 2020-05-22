@@ -39,7 +39,7 @@
         </mat-error>
         <span>*required</span>
       </div>
-      <agmp-date-input formControlName="creationDate"></agmp-date-input>
+      <agmp-date-input formControlName="creationDate" [ngClass]="{'invalid': isFieldInvalid('creationDate')}"></agmp-date-input>
     </div>
 
     <mat-card-footer>
