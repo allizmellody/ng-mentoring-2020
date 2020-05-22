@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { IUser, User } from '../shared/user.model';
 import { LocalStorageService } from '../shared/local-storage.service';
@@ -8,7 +9,7 @@ import { ApiService } from '../shared/api.service';
   providedIn: 'root',
 })
 export class AuthService {
-  private user: IUser | null = null;
+  private user: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -20,12 +21,12 @@ export class AuthService {
       .post<any>('auth/userinfo')
       .toPromise()
       .then((val) => {
-        this.user = new User(val);
+        this.user.next(new User(val));
       });
   }
 
-  public get userInfo(): IUser | null {
-    return this.user;
+  public getUserInfo(): Observable<IUser> {
+    return this.user.asObservable();
   }
 
   public login(body): Promise<void> {
@@ -49,13 +50,13 @@ export class AuthService {
 
   public logout(): Promise<void> {
     this.localStorageService.removeItem('token');
-    this.user = null;
+    this.user.next(null);
 
     return Promise.resolve();
   }
 
   public isAuthenticated(): boolean {
-    return Boolean(this.user);
+    return Boolean(this.user.getValue());
   }
 
   public getToken(): string {

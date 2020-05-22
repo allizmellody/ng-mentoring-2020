@@ -6,6 +6,7 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { map } from 'rxjs/operators';
 
 import { DialogService } from './dialog/dialog.service';
@@ -13,6 +14,7 @@ import { IChangeDetector } from './change-detector.model';
 
 export const CHANGE_DETECTOR = new InjectionToken('Change Detector');
 
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -49,7 +51,8 @@ export class CanDeactivateGuard implements CanDeactivate<Component> {
             this.changeDetector.checkChanges = false;
             return true;
           }
-        })
+        }),
+        untilDestroyed(this)
       );
   }
 }

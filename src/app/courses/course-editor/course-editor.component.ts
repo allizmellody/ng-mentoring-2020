@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import moment from 'moment';
 
@@ -26,6 +27,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
+@UntilDestroy()
 @Component({
   selector: 'course-editor',
   templateUrl: './course-editor.component.html',
@@ -37,7 +39,7 @@ export class CourseEditorComponent implements OnInit {
   public courseForm = this.fb.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
-    duration: [null, [Validators.required, Validators.pattern(/\d/)]],
+    duration: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
     creationDate: ['', Validators.required],
   });
 
@@ -54,11 +56,14 @@ export class CourseEditorComponent implements OnInit {
     this.subscribeFormChanges();
 
     if (id) {
-      this.coursesService.getItemById(id).subscribe((data) => {
-        this.title = data.title;
-        this.updateForm(data);
-        this.changeBreadcrumbDisplayName(data.title);
-      });
+      this.coursesService
+        .getItemById(id)
+        .pipe(untilDestroyed(this))
+        .subscribe((data) => {
+          this.title = data.title;
+          this.updateForm(data);
+          this.changeBreadcrumbDisplayName(data.title);
+        });
     }
   }
 
@@ -70,7 +75,7 @@ export class CourseEditorComponent implements OnInit {
   }
 
   private subscribeFormChanges(): void {
-    this.courseForm.valueChanges.subscribe(() => {
+    this.courseForm.valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
       this.coursesService.checkChanges = true;
     });
   }
@@ -93,10 +98,11 @@ export class CourseEditorComponent implements OnInit {
   }
 
   public onSubmit(data): void {
-    console.log(this.courseForm.value);
     if (this.courseForm.valid) {
       this.coursesService.checkChanges = false;
-      this.postItem(data).subscribe(() => this.router.navigate(['/courses']));
+      this.postItem(data)
+        .pipe(untilDestroyed(this))
+        .subscribe(() => this.router.navigate(['/courses']));
     }
   }
 }

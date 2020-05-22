@@ -4,7 +4,7 @@
     <mat-icon class="icon medium">add</mat-icon>
     Add course
   </a>
-  <div *ngIf="!isLoading && !courses.length" class="courses__no-data">No data. Feel free to add new course</div>
+  <div *ngIf="!courses.length && !(isLoading | async)" class="courses__no-data">No data. Feel free to add new course</div>
   <course *ngFor="let course of courses" [item]="course" (delete)="handleDelete($event)"></course>
   <button *ngIf="showLoadMore" mat-button class="btn white big fill courses__load-more" (click)="loadMore()">
     LOAD MORE

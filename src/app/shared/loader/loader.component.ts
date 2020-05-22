@@ -1,16 +1,19 @@
 import { Component } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { LoaderService } from './loader.service';
+import { Observable } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'agmp-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss'],
 })
 export class LoaderComponent {
-  public isLoading: boolean;
+  public isLoading: Observable<boolean>;
 
   constructor(private loaderService: LoaderService) {
-    this.loaderService.isLoading.subscribe((v) => (this.isLoading = v));
+    this.isLoading = this.loaderService.isLoading;
   }
 }

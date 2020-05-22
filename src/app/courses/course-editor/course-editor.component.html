@@ -27,9 +27,9 @@
         <span>*required</span>
       </div>
       <mat-form-field appearance="outline" class="course-editor__input">
-        <input matInput id="duration" type="number" placeholder="minutes" formControlName="duration" [errorStateMatcher]="matcher">
+        <input matInput id="duration" type="number" placeholder="minutes" formControlName="duration" [errorStateMatcher]="matcher" autocomplete="off">
         <mat-error *ngIf="isFieldValid('duration')">
-          Please enter duration
+          Please enter positive duration
         </mat-error>
       </mat-form-field>
     </div>
