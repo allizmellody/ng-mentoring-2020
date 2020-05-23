@@ -1,0 +1,6 @@
+<ng-content></ng-content>
+<div class="autocomplete-wrapper" (click)="clickedInside($event)">
+  <div class="list-group autocomplete" *ngIf="results">
+    <a [routerLink]="" class="list-group-item" (click)="selectResult(result)" *ngFor="let result of results; let i = index" [innerHTML]="dataMapping(result) | highlight: query" [ngClass]="{'active': i == selectedIndex}"></a>
+  </div>
+</div>

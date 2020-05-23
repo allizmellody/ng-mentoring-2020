@@ -12,6 +12,10 @@ import { DialogComponent } from './dialog/dialog.component';
 import { LoaderComponent } from './loader/loader.component';
 import { DateInputComponent } from './date-input/date-input.component';
 import { NumberInputComponent } from './number-input/number-input.component';
+import { AutosuggestInputComponent } from './autosuggest-input/autosuggest-input.component';
+import { AutosuggestInputDirective } from './autosuggest-input/autosuggest-input.directive';
+import { HighlightPipe } from './autosuggest-input/highlight.pipe';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -19,6 +23,9 @@ import { NumberInputComponent } from './number-input/number-input.component';
     LoaderComponent,
     DateInputComponent,
     NumberInputComponent,
+    AutosuggestInputComponent,
+    AutosuggestInputDirective,
+    HighlightPipe,
   ],
   imports: [
     CommonModule,
@@ -29,7 +36,14 @@ import { NumberInputComponent } from './number-input/number-input.component';
     MatProgressSpinnerModule,
     MatInputModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
-  exports: [LoaderComponent, DateInputComponent, NumberInputComponent],
+  exports: [
+    LoaderComponent,
+    DateInputComponent,
+    NumberInputComponent,
+    AutosuggestInputDirective,
+    AutosuggestInputComponent,
+  ],
 })
 export class SharedModule {}

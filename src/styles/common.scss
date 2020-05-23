@@ -45,10 +45,6 @@ input.input {
   }
 }
 
-:host(.invalid) .input {
-  border: 1px solid #f44336;
-}
-
 .form-field {
   margin-bottom: 16px;
 }
