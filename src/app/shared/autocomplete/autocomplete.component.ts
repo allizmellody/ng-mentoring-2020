@@ -7,9 +7,11 @@ import {
   ContentChild,
   AfterContentInit,
 } from '@angular/core';
-import { AutoCompleteRefDirective } from './autocomplete.directive';
 import { Observable } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AutoCompleteRefDirective } from './autocomplete.directive';
 
+@UntilDestroy()
 @Component({
   selector: 'agmp-autocomplete',
   templateUrl: './autocomplete.component.html',
@@ -32,42 +34,44 @@ export class AutoCompleteComponent implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.input.change.subscribe((query: string) => {
+    this.input.change.pipe(untilDestroyed(this)).subscribe((query: string) => {
       this.query = query;
       this.change.emit();
       this.searchCounter++;
       const counter = this.searchCounter;
 
       if (query) {
-        this.data(query).subscribe((data) => {
-          if (counter === this.searchCounter) {
-            this.results = data;
-            this.input.hasResults = data.length > 0;
-            this.selectedIndex = 0;
-          }
-        });
+        this.data(query)
+          .pipe(untilDestroyed(this))
+          .subscribe((data) => {
+            if (counter === this.searchCounter) {
+              this.results = data;
+              this.input.hasResults = data.length > 0;
+              this.selectedIndex = 0;
+            }
+          });
       } else {
         this.clearResults();
       }
     });
 
-    this.input.cancel.subscribe(() => {
+    this.input.cancel.pipe(untilDestroyed(this)).subscribe(() => {
       this.clearResults();
     });
 
-    this.input.select.subscribe(() => {
+    this.input.select.pipe(untilDestroyed(this)).subscribe(() => {
       if (this.results && this.results.length > 0) {
         this.selectResult(this.results[this.selectedIndex]);
       }
     });
 
-    this.input.up.subscribe(() => {
+    this.input.up.pipe(untilDestroyed(this)).subscribe(() => {
       if (this.results && this.selectedIndex > 0) {
         this.selectedIndex--;
       }
     });
 
-    this.input.down.subscribe(() => {
+    this.input.down.pipe(untilDestroyed(this)).subscribe(() => {
       if (this.results && this.selectedIndex + 1 < this.results.length) {
         this.selectedIndex++;
       }
