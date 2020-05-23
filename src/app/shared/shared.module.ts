@@ -7,15 +7,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { DialogComponent } from './dialog/dialog.component';
 import { LoaderComponent } from './loader/loader.component';
 import { DateInputComponent } from './date-input/date-input.component';
 import { NumberInputComponent } from './number-input/number-input.component';
-import { AutosuggestInputComponent } from './autosuggest-input/autosuggest-input.component';
-import { AutosuggestInputDirective } from './autosuggest-input/autosuggest-input.directive';
-import { HighlightPipe } from './autosuggest-input/highlight.pipe';
-import { RouterModule } from '@angular/router';
+import { AutoCompleteComponent } from './autocomplete/autocomplete.component';
+import { AutoCompleteRefDirective } from './autocomplete/autocomplete.directive';
+import { HighlightPipe } from './autocomplete/highlight.pipe';
 
 @NgModule({
   declarations: [
@@ -23,9 +23,9 @@ import { RouterModule } from '@angular/router';
     LoaderComponent,
     DateInputComponent,
     NumberInputComponent,
-    AutosuggestInputComponent,
-    AutosuggestInputDirective,
     HighlightPipe,
+    AutoCompleteComponent,
+    AutoCompleteRefDirective,
   ],
   imports: [
     CommonModule,
@@ -42,8 +42,8 @@ import { RouterModule } from '@angular/router';
     LoaderComponent,
     DateInputComponent,
     NumberInputComponent,
-    AutosuggestInputDirective,
-    AutosuggestInputComponent,
+    AutoCompleteComponent,
+    AutoCompleteRefDirective,
   ],
 })
 export class SharedModule {}

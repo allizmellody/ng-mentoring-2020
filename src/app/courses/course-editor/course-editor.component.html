@@ -41,9 +41,18 @@
       </div>
       <agmp-date-input formControlName="creationDate" [ngClass]="{'invalid': isFieldInvalid('creationDate')}"></agmp-date-input>
     </div>
-    <agmp-autosuggest-input [data]="getData" [dataMapping]="dataMapping" (change)="change($event)">
-      <input type="text" class="form-control" name="AutoComplete" placeholder="Search..." autocomplete="off" autocompleteRef />
-    </agmp-autosuggest-input>
+    <div>
+      <div class="field-label">
+        <label for="authors">Date:</label>
+        <mat-error *ngIf="isFieldInvalid('authors')">
+          Please enter at least one author
+        </mat-error>
+        <span>*required</span>
+      </div>
+      <agmp-autocomplete [data]="getData" [dataMapping]="dataMapping" (change)="change($event)">
+        <input id="authors" type="text" class="input" name="AutoComplete" placeholder="Search..." autocomplete="off" autocompleteRef />
+      </agmp-autocomplete>
+    </div>
 
     <mat-card-footer>
       <a mat-button routerLink="/courses" class="btn big gray">

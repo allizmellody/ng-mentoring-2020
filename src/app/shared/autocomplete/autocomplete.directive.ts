@@ -9,7 +9,7 @@ import {
 @Directive({
   selector: '[autocompleteRef]',
 })
-export class AutosuggestInputDirective {
+export class AutoCompleteRefDirective {
   @Input() hasResults = false;
   @Output() change = new EventEmitter<string>();
   @Output() cancel = new EventEmitter();
@@ -25,16 +25,16 @@ export class AutosuggestInputDirective {
   @HostListener('keydown', ['$event'])
   onkeydown(event: any) {
     switch (event.code) {
-      case 27:
+      case 'Escape':
         this.cancel.emit();
         return false;
-      case 13:
+      case 'Enter':
         this.select.emit();
         return !this.hasResults;
-      case 38:
+      case 'ArrowUp':
         this.up.emit();
         return false;
-      case 40:
+      case 'ArrowDown':
         this.down.emit();
         return false;
       default:

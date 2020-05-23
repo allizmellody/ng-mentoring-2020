@@ -30,6 +30,7 @@ export class CourseEditorComponent implements OnInit {
     description: ['', [Validators.required, Validators.maxLength(500)]],
     duration: [null],
     creationDate: [null],
+    authors: [[], Validators.required],
   });
 
   private searchData = [

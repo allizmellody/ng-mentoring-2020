@@ -2,37 +2,21 @@ import {
   Component,
   Input,
   Output,
-  OnInit,
-  ContentChild,
   EventEmitter,
   HostListener,
+  ContentChild,
+  AfterContentInit,
 } from '@angular/core';
-import { AutosuggestInputDirective } from './autosuggest-input.directive';
+import { AutoCompleteRefDirective } from './autocomplete.directive';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'agmp-autosuggest-input',
-  template: `
-    <ng-content></ng-content>
-    <div class="autocomplete-wrapper" (click)="clickedInside($event)">
-      <div class="list-group autocomplete" *ngIf="results">
-        <a
-          [routerLink]=""
-          class="list-group-item"
-          (click)="selectResult(result)"
-          *ngFor="let result of results; let i = index"
-          [innerHTML]="dataMapping(result) | highlight: query"
-          [ngClass]="{ active: i == selectedIndex }"
-        ></a>
-      </div>
-    </div>
-  `,
-  styleUrls: ['./autosuggest-input.component.scss'],
+  selector: 'agmp-autocomplete',
+  templateUrl: './autocomplete.component.html',
+  styleUrls: ['./autocomplete.component.scss'],
 })
-export class AutosuggestInputComponent implements OnInit {
-  @ContentChild(AutosuggestInputDirective)
-  public input: AutosuggestInputDirective;
-
+export class AutoCompleteComponent implements AfterContentInit {
+  @ContentChild(AutoCompleteRefDirective) input: AutoCompleteRefDirective;
   @Input() data: (searchTerm: string) => Observable<any[]>;
   @Input() dataMapping: (obj: any) => string;
   @Output() change = new EventEmitter<any>();
@@ -43,11 +27,11 @@ export class AutosuggestInputComponent implements OnInit {
   private searchCounter = 0;
 
   @HostListener('document:click', ['$event'])
-  clickedOutside($event: any): void {
+  clickedOutside(): void {
     this.clearResults();
   }
 
-  ngOnInit(): void {
+  ngAfterContentInit(): void {
     this.input.change.subscribe((query: string) => {
       this.query = query;
       this.change.emit();
@@ -56,7 +40,6 @@ export class AutosuggestInputComponent implements OnInit {
 
       if (query) {
         this.data(query).subscribe((data) => {
-          console.log(data);
           if (counter === this.searchCounter) {
             this.results = data;
             this.input.hasResults = data.length > 0;

@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class HighlightPipe implements PipeTransform {
   transform(value: string, args: any): any {
-    const regex = new RegExp(args, 'gi');
+    const re = new RegExp(args, 'gi');
 
-    return value.replace(regex, (match) => '<strong>' + match + '</strong>');
+    return value.replace(re, (match) => '<strong>' + match + '</strong>');
   }
 }
