@@ -31,7 +31,7 @@ export class CoursesService implements IChangeDetector {
     word: string,
     page: number
   ): Observable<ICoursesResponse> {
-    return this.apiService.findByWord<ICoursesResponse>(this.url, word, page);
+    return this.apiService.searchPage<ICoursesResponse>(this.url, word, page);
   }
 
   public createCourse(data: ICourse): Observable<ICourse> {

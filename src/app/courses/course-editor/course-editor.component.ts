@@ -2,13 +2,21 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, Subscriber } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ICourse } from '../shared/course.model';
 import { CHANGE_DETECTOR } from '../../shared/can-deactivate.guard';
 import { BreadcrumbService } from '../../core/breadcrumbs/breadcrumb.service';
 import { CoursesService } from '../courses.service';
-import { map } from 'rxjs/operators';
+import { AuthorsService } from '../authors.service';
+import { LoaderService } from '../../shared/loader/loader.service';
+import { IAuthor } from '../shared/author.model';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  tap,
+} from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -22,6 +30,8 @@ export class CourseEditorComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
+    private authorsService: AuthorsService,
+    private loaderService: LoaderService,
     @Inject(CHANGE_DETECTOR) private coursesService: CoursesService
   ) {}
   public title: string;
@@ -32,19 +42,6 @@ export class CourseEditorComponent implements OnInit {
     creationDate: [null],
     authors: [[], Validators.required],
   });
-
-  private searchData = [
-    'one',
-    'two',
-    'three',
-    'four',
-    'five',
-    'six',
-    'seven',
-    'eight',
-    'nine',
-    'ten',
-  ];
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -88,6 +85,22 @@ export class CourseEditorComponent implements OnInit {
     return this.coursesService.createCourse(data);
   }
 
+  private searchAuthors(query: string): Observable<IAuthor[]> {
+    this.loaderService.prevented = true;
+    return this.authorsService.searchByWord(query);
+  }
+
+  public getAuthors = (query: string): Observable<IAuthor[]> =>
+    this.searchAuthors(query);
+
+  public dataMapping(obj: IAuthor): string {
+    return obj.name;
+  }
+
+  public setAuthor(obj: any): void {
+    console.log(obj);
+  }
+
   public isFieldInvalid(fieldName: string): boolean {
     const field = this.courseForm.get(fieldName);
 
@@ -101,30 +114,5 @@ export class CourseEditorComponent implements OnInit {
         .pipe(untilDestroyed(this))
         .subscribe(() => this.router.navigate(['/courses']));
     }
-  }
-
-  getData = (query: string) => this.search(query);
-
-  // The dataMapping property controls the mapping of an object returned via getData.
-  // to a string that can be displayed to the use as an option to select.
-  dataMapping = (obj: any) => obj;
-
-  // This function is called any time a change is made in the autocomplete.
-  // When the text is changed manually, no object is passed.
-  // When a selection is made the object is passed.
-  change(obj: any): void {
-    if (obj) {
-      // You can do pretty much anything here as the entire object is passed if it's been selected.
-      // Navigate to another page, update a model etc.
-      alert(obj);
-    }
-  }
-
-  // This function mimics an Observable http service call.
-  // In reality it's probably calling your API, but today it's looking at mock static data.
-  private search(query: string): Observable<any> {
-    return new Observable<any>((subscriber: Subscriber<any>) =>
-      subscriber.next()
-    ).pipe(map((o) => this.searchData.filter((d) => d.indexOf(query) > -1)));
   }
 }

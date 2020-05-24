@@ -7,8 +7,8 @@ export class Author implements IAuthor {
   public id: string;
   public name: string;
 
-  constructor({ id, firstName, lastName }) {
+  constructor({ id, name }) {
     this.id = id;
-    this.name = firstName + ' ' + lastName;
+    this.name = name;
   }
 }

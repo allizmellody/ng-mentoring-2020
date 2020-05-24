@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  public isLoading: Observable<boolean>;
+  public isLoading: Observable<boolean> = this.loaderService.isLoading;
   public courses: ICourse[] = [];
   private page = 1;
   private count: number;
@@ -25,9 +25,7 @@ export class CoursesComponent implements OnInit {
     private coursesService: CoursesService,
     private dialogService: DialogService,
     private loaderService: LoaderService
-  ) {
-    this.isLoading = loaderService.isLoading;
-  }
+  ) {}
 
   public get showLoadMore() {
     return this.courses.length && this.courses.length < this.count;

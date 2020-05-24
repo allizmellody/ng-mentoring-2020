@@ -49,7 +49,7 @@
         </mat-error>
         <span>*required</span>
       </div>
-      <agmp-autocomplete [data]="getData" [dataMapping]="dataMapping" (change)="change($event)">
+      <agmp-autocomplete [search]="getAuthors" [dataMapping]="dataMapping" (change)="setAuthor($event)">
         <input id="authors" type="text" class="input" name="AutoComplete" placeholder="Search..." autocomplete="off" autocompleteRef />
       </agmp-autocomplete>
     </div>

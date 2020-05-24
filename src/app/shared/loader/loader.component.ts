@@ -11,9 +11,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./loader.component.scss'],
 })
 export class LoaderComponent {
-  public isLoading: Observable<boolean>;
+  public isLoading: Observable<boolean> = this.loaderService.isLoading;
 
-  constructor(private loaderService: LoaderService) {
-    this.isLoading = this.loaderService.isLoading;
-  }
+  constructor(private loaderService: LoaderService) {}
 }

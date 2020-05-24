@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { AutoCompleteRefDirective } from './autocomplete.directive';
 
 @UntilDestroy()
@@ -19,8 +20,8 @@ import { AutoCompleteRefDirective } from './autocomplete.directive';
 })
 export class AutoCompleteComponent implements AfterContentInit {
   @ContentChild(AutoCompleteRefDirective) input: AutoCompleteRefDirective;
-  @Input() data: (searchTerm: string) => Observable<any[]>;
   @Input() dataMapping: (obj: any) => string;
+  @Input() search: (query: string) => Observable<any>;
   @Output() change = new EventEmitter<any>();
 
   public results: any[];
@@ -34,26 +35,33 @@ export class AutoCompleteComponent implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.input.change.pipe(untilDestroyed(this)).subscribe((query: string) => {
-      this.query = query;
-      this.change.emit();
-      this.searchCounter++;
-      const counter = this.searchCounter;
+    this.input.change
+      .pipe(
+        filter((value: string) => !value || value.length >= 3),
+        debounceTime(300),
+        distinctUntilChanged(),
+        untilDestroyed(this)
+      )
+      .subscribe((query: string) => {
+        this.query = query;
+        this.change.emit();
+        this.searchCounter++;
+        const counter = this.searchCounter;
 
-      if (query) {
-        this.data(query)
-          .pipe(untilDestroyed(this))
-          .subscribe((data) => {
-            if (counter === this.searchCounter) {
-              this.results = data;
-              this.input.hasResults = data.length > 0;
-              this.selectedIndex = 0;
-            }
-          });
-      } else {
-        this.clearResults();
-      }
-    });
+        if (query) {
+          this.search(query)
+            .pipe(untilDestroyed(this))
+            .subscribe((data) => {
+              if (counter === this.searchCounter) {
+                this.results = data;
+                this.input.hasResults = data.length > 0;
+                this.selectedIndex = 0;
+              }
+            });
+        } else {
+          this.clearResults();
+        }
+      });
 
     this.input.cancel.pipe(untilDestroyed(this)).subscribe(() => {
       this.clearResults();
@@ -78,20 +86,20 @@ export class AutoCompleteComponent implements AfterContentInit {
     });
   }
 
-  selectResult(result: any): void {
-    this.change.emit(result);
-    this.clearResults();
-  }
-
-  clickedInside($event: any): void {
-    $event.preventDefault();
-    $event.stopPropagation();
-  }
-
   private clearResults(): void {
     this.results = [];
     this.selectedIndex = 0;
     this.searchCounter = 0;
     this.input.hasResults = false;
+  }
+
+  public selectResult(result: any): void {
+    this.change.emit(result);
+    this.clearResults();
+  }
+
+  public clickedInside($event: any): void {
+    $event.preventDefault();
+    $event.stopPropagation();
   }
 }

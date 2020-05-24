@@ -9,6 +9,7 @@ import {
 import { Observable } from 'rxjs';
 
 import { LoaderService } from './loader.service';
+import { finalize } from 'rxjs/operators';
 
 @Injectable()
 export class LoaderInterceptor implements HttpInterceptor {
@@ -21,7 +22,7 @@ export class LoaderInterceptor implements HttpInterceptor {
     if (i >= 0) {
       this.requests.splice(i, 1);
     }
-    this.loaderService.isLoading.next(this.requests.length > 0);
+    this.loaderService.toggle(this.requests.length > 0);
   }
 
   intercept(
@@ -30,27 +31,26 @@ export class LoaderInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     this.requests.push(req);
 
-    this.loaderService.isLoading.next(true);
+    this.loaderService.showNotPrevented();
     return new Observable((subscriber) => {
-      const subscription = next.handle(req).subscribe(
-        (event) => {
-          if (event instanceof HttpResponse) {
-            this.removeRequest(req);
-            subscriber.next(event);
+      const subscription = next
+        .handle(req)
+        .pipe(finalize(() => this.removeRequest(req)))
+        .subscribe(
+          (event) => {
+            if (event instanceof HttpResponse) {
+              subscriber.next(event);
+            }
+          },
+          (err) => {
+            subscriber.error(err);
+          },
+          () => {
+            subscriber.complete();
           }
-        },
-        (err) => {
-          this.removeRequest(req);
-          subscriber.error(err);
-        },
-        () => {
-          this.removeRequest(req);
-          subscriber.complete();
-        }
-      );
+        );
 
       return () => {
-        this.removeRequest(req);
         subscription.unsubscribe();
       };
     });

@@ -4,13 +4,12 @@ import { IAuthor } from './shared/author.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthorsService {
+  constructor(private apiService: ApiService) {}
 
-  constructor(private apiService: ApiService) { }
-
-  getListByQuery(query: string): Observable<IAuthor[]> {
-    return this.apiService.get(`authors/`)
+  searchByWord(query: string): Observable<IAuthor[]> {
+    return this.apiService.get<IAuthor[]>(`authors?q=${query}`);
   }
 }
