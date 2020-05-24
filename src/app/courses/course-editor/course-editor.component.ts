@@ -1,6 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 
@@ -11,12 +17,6 @@ import { CoursesService } from '../courses.service';
 import { AuthorsService } from '../authors.service';
 import { LoaderService } from '../../shared/loader/loader.service';
 import { IAuthor } from '../shared/author.model';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  tap,
-} from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -40,7 +40,7 @@ export class CourseEditorComponent implements OnInit {
     description: ['', [Validators.required, Validators.maxLength(500)]],
     duration: [null],
     creationDate: [null],
-    authors: [[], Validators.required],
+    authors: [[]],
   });
 
   ngOnInit(): void {
@@ -85,20 +85,41 @@ export class CourseEditorComponent implements OnInit {
     return this.coursesService.createCourse(data);
   }
 
-  private searchAuthors(query: string): Observable<IAuthor[]> {
+  private get authors(): AbstractControl {
+    return this.courseForm.get('authors');
+  }
+
+  private updateAuthors(value: IAuthor[]): void {
+    if (!this.authors.touched) {
+      this.authors.markAsTouched();
+    }
+    this.courseForm.patchValue({ authors: value });
+  }
+
+  public addAuthor(value: IAuthor): void {
+    const updatedAuthors = [...this.authors.value, value];
+    this.updateAuthors(updatedAuthors);
+  }
+
+  public removeAuthor(idx: number): void {
+    const authors = this.authors.value;
+
+    if (authors[idx]) {
+      authors.splice(idx, 1);
+      this.updateAuthors(authors);
+    }
+  }
+
+  private getAuthors(query: string): Observable<IAuthor[]> {
     this.loaderService.prevented = true;
     return this.authorsService.searchByWord(query);
   }
 
-  public getAuthors = (query: string): Observable<IAuthor[]> =>
-    this.searchAuthors(query);
+  public searchAuthors = (query: string): Observable<IAuthor[]> =>
+    this.getAuthors(query);
 
   public dataMapping(obj: IAuthor): string {
     return obj.name;
-  }
-
-  public setAuthor(obj: any): void {
-    console.log(obj);
   }
 
   public isFieldInvalid(fieldName: string): boolean {

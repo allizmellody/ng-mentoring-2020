@@ -1,0 +1,22 @@
+<div class="tag-input">
+  <div *ngIf="value && value.length" class="tag-input-tags">
+    <div *ngFor="let item of value; index as i" class="tag-input-item">
+      <span class="clip-text">{{dataMapping(item)}}</span>
+      <mat-icon class="icon medium tag-input-icon" (click)="onDelete(i)">close</mat-icon>
+    </div>
+  </div>
+  <input type="text" class="tag-input--hidden" name="autocomplete" [placeholder]="placeholder" autocomplete="off" autocompleteRef />
+  <div class="autocomplete-wrapper" (click)="clickedInside($event)">
+    <div class="list-group autocomplete" *ngIf="results.length">
+      <div
+        #element
+        tabIndex="1"
+        class="list-group-item"
+        *ngFor="let result of results; index as i"
+        (click)="selectResult(result)"
+        [innerHTML]="dataMapping(result) | highlight: query"
+        [ngClass]="{active: i === selectedIndex}"
+      ></div>
+    </div>
+  </div>
+</div>

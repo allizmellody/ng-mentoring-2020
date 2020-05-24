@@ -1,18 +1,11 @@
-import {
-  AfterViewInit,
-  Component,
-  forwardRef,
-  Input,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  DefaultValueAccessor,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { ReplaySubject } from 'rxjs';
+import { BaseValueAccessorDirective } from '../base-value-accessor/base-value-accessor.directive';
 
 const NUMBER_REGEX = /^[0-9]+$/;
 
@@ -36,39 +29,9 @@ const NUMBER_REGEX = /^[0-9]+$/;
     },
   ],
 })
-export class NumberInputComponent
+export class NumberInputComponent extends BaseValueAccessorDirective
   implements ControlValueAccessor, AfterViewInit {
-  @Input() formControlName: string;
-  @ViewChild(DefaultValueAccessor) valueAccessor: DefaultValueAccessor;
-
-  private delegatedMethodCalls = new ReplaySubject<
-    (_: ControlValueAccessor) => void
-  >();
-
-  ngAfterViewInit(): void {
-    this.delegatedMethodCalls.subscribe((fn) => fn(this.valueAccessor));
-  }
-
-  registerOnChange(fn: (_: any) => void): void {
-    this.delegatedMethodCalls.next((valueAccessor) =>
-      valueAccessor.registerOnChange(fn)
-    );
-  }
-  registerOnTouched(fn: () => void): void {
-    this.delegatedMethodCalls.next((valueAccessor) =>
-      valueAccessor.registerOnTouched(fn)
-    );
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.delegatedMethodCalls.next((valueAccessor) =>
-      valueAccessor.setDisabledState(isDisabled)
-    );
-  }
-
-  writeValue(value: any): void {
-    this.delegatedMethodCalls.next((valueAccessor) =>
-      valueAccessor.writeValue(value)
-    );
+  constructor() {
+    super();
   }
 }

@@ -1,0 +1,75 @@
+.autocomplete {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #d9dbe3;
+  border-radius: 6px 6px 0 0;
+  max-height: 180px;
+  overflow-y: auto;
+  bottom: 45px;
+
+  &-wrapper {
+    position: relative;
+  }
+}
+
+.list-group {
+  &-item {
+    padding: 0 10px;
+    cursor: pointer;
+    line-height: 45px;
+    border-bottom: 1px solid #d9dbe3;
+
+    &:hover,
+    &.active {
+      background: #f2f3f7;
+    }
+
+    &:last-child {
+      border-bottom-style: none;
+    }
+  }
+}
+
+.tag-input {
+  border: 1px solid #d9dbe3;
+  border-radius: 6px;
+  line-height: 45px;
+  margin: .25em 0;
+
+  &--hidden {
+    border: none;
+    outline: none;
+    padding: 0 10px;
+    width: 100%;
+  }
+
+  &-tags {
+    padding: 10px 10px;
+  }
+
+  &-item {
+    max-width: 200px;
+    float: left;
+    display: flex;
+    align-items: center;
+    line-height: 20px;
+    background-color: #d9dbe3;
+    color: #5b616f;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+    margin: 0 5px 5px 0;
+  }
+
+  &-icon {
+    margin: 0 0 0 5px;
+    cursor: pointer;
+  }
+}
+
+:host(.invalid) .tag-input {
+  border: 1px solid #f44336;
+}

@@ -13,9 +13,11 @@ import { DialogComponent } from './dialog/dialog.component';
 import { LoaderComponent } from './loader/loader.component';
 import { DateInputComponent } from './date-input/date-input.component';
 import { NumberInputComponent } from './number-input/number-input.component';
-import { AutoCompleteComponent } from './autocomplete/autocomplete.component';
-import { AutoCompleteRefDirective } from './autocomplete/autocomplete.directive';
-import { HighlightPipe } from './autocomplete/highlight.pipe';
+import { AutoCompleteRefDirective } from './tag-input/autocomplete.directive';
+import { HighlightPipe } from './tag-input/highlight.pipe';
+import { TagInputComponent } from './tag-input/tag-input.component';
+import { MatIconModule } from '@angular/material/icon';
+import { BaseValueAccessorDirective } from './base-value-accessor/base-value-accessor.directive';
 
 @NgModule({
   declarations: [
@@ -24,8 +26,9 @@ import { HighlightPipe } from './autocomplete/highlight.pipe';
     DateInputComponent,
     NumberInputComponent,
     HighlightPipe,
-    AutoCompleteComponent,
+    TagInputComponent,
     AutoCompleteRefDirective,
+    BaseValueAccessorDirective,
   ],
   imports: [
     CommonModule,
@@ -37,13 +40,14 @@ import { HighlightPipe } from './autocomplete/highlight.pipe';
     MatInputModule,
     ReactiveFormsModule,
     RouterModule,
+    MatIconModule,
   ],
   exports: [
     LoaderComponent,
     DateInputComponent,
     NumberInputComponent,
-    AutoCompleteComponent,
     AutoCompleteRefDirective,
+    TagInputComponent,
   ],
 })
 export class SharedModule {}

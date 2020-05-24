@@ -1,18 +1,11 @@
-import {
-  AfterViewInit,
-  Component,
-  forwardRef,
-  Input,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  DefaultValueAccessor,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { ReplaySubject } from 'rxjs';
+import { BaseValueAccessorDirective } from '../base-value-accessor/base-value-accessor.directive';
 import moment from 'moment';
 
 const DATE_REGEX = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
@@ -37,33 +30,10 @@ const DATE_REGEX = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
     },
   ],
 })
-export class DateInputComponent implements ControlValueAccessor, AfterViewInit {
-  @Input() formControlName: string;
-  @ViewChild(DefaultValueAccessor) valueAccessor: DefaultValueAccessor;
-
-  private delegatedMethodCalls = new ReplaySubject<
-    (_: ControlValueAccessor) => void
-  >();
-
-  ngAfterViewInit(): void {
-    this.delegatedMethodCalls.subscribe((fn) => fn(this.valueAccessor));
-  }
-
-  registerOnChange(fn: (_: any) => void): void {
-    this.delegatedMethodCalls.next((valueAccessor) =>
-      valueAccessor.registerOnChange(fn)
-    );
-  }
-  registerOnTouched(fn: () => void): void {
-    this.delegatedMethodCalls.next((valueAccessor) =>
-      valueAccessor.registerOnTouched(fn)
-    );
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.delegatedMethodCalls.next((valueAccessor) =>
-      valueAccessor.setDisabledState(isDisabled)
-    );
+export class DateInputComponent extends BaseValueAccessorDirective
+  implements ControlValueAccessor, AfterViewInit {
+  constructor() {
+    super();
   }
 
   writeValue(value: any): void {

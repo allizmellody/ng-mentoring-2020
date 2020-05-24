@@ -23,12 +23,15 @@ export class AutoCompleteRefDirective {
   }
 
   @HostListener('keydown', ['$event'])
-  onkeydown(event: any) {
+  keydown(event: KeyboardEvent) {
     switch (event.code) {
       case 'Escape':
         this.cancel.emit();
         return false;
       case 'Enter':
+        if (this.hasResults) {
+          event.preventDefault();
+        }
         this.select.emit();
         return !this.hasResults;
       case 'ArrowUp':
