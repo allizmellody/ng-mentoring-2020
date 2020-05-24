@@ -1,5 +1,7 @@
-<mat-form-field appearance="outline" class="search__input">
-  <mat-icon matPrefix class="icon big search__icon">search</mat-icon>
-  <mat-label>Text to search</mat-label>
-  <input matInput type="text" autocomplete="off" (keyup)='keyUp.next($event)'>
-</mat-form-field>
+<form (keyup)='keyUp.next($event)'>
+  <mat-form-field appearance="outline" class="search__input">
+    <mat-icon matPrefix class="icon big search__icon">search</mat-icon>
+    <mat-label>Text to search</mat-label>
+    <input matInput type="text" autocomplete="off">
+  </mat-form-field>
+</form>

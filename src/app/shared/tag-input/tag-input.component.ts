@@ -60,7 +60,6 @@ export class TagInputComponent implements AfterViewInit, ControlValueAccessor {
   onChange(_: any) {}
 
   writeValue(value: any) {
-    console.log(value);
     this.value = value;
     this.onChange(this.value);
   }
@@ -134,7 +133,6 @@ export class TagInputComponent implements AfterViewInit, ControlValueAccessor {
   }
 
   public onDelete(idx: number): void {
-    console.log(idx);
     this.remove.emit(idx);
   }
 
