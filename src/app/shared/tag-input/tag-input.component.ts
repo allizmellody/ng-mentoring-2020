@@ -46,6 +46,7 @@ import { AutoCompleteRefDirective } from './autocomplete.directive';
 export class TagInputComponent implements AfterViewInit, ControlValueAccessor {
   @ViewChild(AutoCompleteRefDirective) input: AutoCompleteRefDirective;
   @ViewChildren('element') elements: QueryList<ElementRef>;
+  @ViewChild('inputRef') inputRef: ElementRef;
   @Input() dataMapping: (obj: any) => string;
   @Input() search: (query: string) => Observable<any>;
   @Input() placeholder: string;
@@ -125,6 +126,7 @@ export class TagInputComponent implements AfterViewInit, ControlValueAccessor {
     this.results = [];
     this.selectedIndex = 0;
     this.input.hasResults = false;
+    this.inputRef.nativeElement.value = '';
   }
 
   public selectResult(result: any): void {
@@ -134,6 +136,10 @@ export class TagInputComponent implements AfterViewInit, ControlValueAccessor {
 
   public onDelete(idx: number): void {
     this.remove.emit(idx);
+  }
+
+  public focus(): void {
+    this.inputRef.nativeElement.focus();
   }
 
   public clickedInside($event: any): void {

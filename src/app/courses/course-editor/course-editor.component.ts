@@ -1,12 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 
@@ -60,10 +54,8 @@ export class CourseEditorComponent implements OnInit {
   }
 
   private updateForm(data: ICourse): void {
-    this.courseForm.patchValue(
-      { ...data, creationDate: data.creationDate },
-      { emitEvent: false }
-    );
+    this.courseForm.patchValue(data, { emitEvent: false });
+    this.coursesService.checkChanges = false;
   }
 
   private subscribeFormChanges(): void {
@@ -90,6 +82,8 @@ export class CourseEditorComponent implements OnInit {
   }
 
   private updateAuthors(value: IAuthor[]): void {
+    console.log(123);
+
     if (!this.authors.touched) {
       this.authors.markAsTouched();
     }
@@ -104,6 +98,7 @@ export class CourseEditorComponent implements OnInit {
   public removeAuthor(idx: number): void {
     const authors = this.authors.value;
 
+    console.log(123);
     if (authors[idx]) {
       authors.splice(idx, 1);
       this.updateAuthors(authors);
