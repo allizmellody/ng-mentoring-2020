@@ -1,31 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators,
-} from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import moment from 'moment';
+import { map } from 'rxjs/operators';
 
 import { ICourse } from '../shared/course.model';
 import { CHANGE_DETECTOR } from '../../shared/can-deactivate.guard';
 import { BreadcrumbService } from '../../core/breadcrumbs/breadcrumb.service';
 import { CoursesService } from '../courses.service';
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return Boolean(control && control.invalid && isSubmitted);
-  }
-}
+import { AuthorsService } from '../authors.service';
+import { LoaderService } from '../../shared/loader/loader.service';
+import { IAuthor } from '../shared/author.model';
 
 @UntilDestroy()
 @Component({
@@ -34,22 +20,23 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./course-editor.component.scss'],
 })
 export class CourseEditorComponent implements OnInit {
-  public title: string;
-  public matcher = new MyErrorStateMatcher();
-  public courseForm = this.fb.group({
-    title: ['', Validators.required],
-    description: ['', Validators.required],
-    duration: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-    creationDate: ['', Validators.required],
-  });
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
+    private authorsService: AuthorsService,
+    private loaderService: LoaderService,
     @Inject(CHANGE_DETECTOR) private coursesService: CoursesService
   ) {}
+  public title: string;
+  public courseForm = this.fb.group({
+    title: ['', [Validators.required, Validators.maxLength(50)]],
+    description: ['', [Validators.required, Validators.maxLength(500)]],
+    duration: [null],
+    creationDate: [null],
+    authors: [[]],
+  });
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -68,10 +55,8 @@ export class CourseEditorComponent implements OnInit {
   }
 
   private updateForm(data: ICourse): void {
-    this.courseForm.patchValue(
-      { ...data, creationDate: moment(data.creationDate) },
-      { emitEvent: false }
-    );
+    this.courseForm.patchValue(data, { emitEvent: false });
+    this.coursesService.checkChanges = false;
   }
 
   private subscribeFormChanges(): void {
@@ -93,8 +78,56 @@ export class CourseEditorComponent implements OnInit {
     return this.coursesService.createCourse(data);
   }
 
-  public isFieldValid(path: string): boolean {
-    return this.courseForm.get(path).hasError('required');
+  private get authors(): AbstractControl {
+    return this.courseForm.get('authors');
+  }
+
+  private updateAuthors(value: IAuthor[]): void {
+    if (!this.authors.touched) {
+      this.authors.markAsTouched();
+    }
+    this.courseForm.patchValue({ authors: value });
+  }
+
+  public addAuthor(value: IAuthor): void {
+    const updatedAuthors = [...this.authors.value, value];
+    this.updateAuthors(updatedAuthors);
+  }
+
+  public removeAuthor(idx: number): void {
+    const authors = this.authors.value;
+
+    if (authors[idx]) {
+      authors.splice(idx, 1);
+      this.updateAuthors(authors);
+    }
+  }
+
+  private getAuthors(query: string): Observable<IAuthor[]> {
+    this.loaderService.prevented = true;
+    return this.authorsService.searchByWord(query).pipe(
+      map((v) => {
+        return v.filter(({ id }: IAuthor) => {
+          return !this.authors.value.some(
+            ({ id: selectedId }: IAuthor) => selectedId === id
+          );
+        });
+      })
+    );
+  }
+
+  public searchAuthors = (query: string): Observable<IAuthor[]> =>
+    this.getAuthors(query);
+
+  public dataMapping(obj: IAuthor): string {
+    return obj.name;
+  }
+
+  public isFieldInvalid(fieldName: string, error?: string): boolean {
+    const field = this.courseForm.get(fieldName);
+    const invalid = error ? field.errors?.[error] : field.invalid;
+
+    return field.touched && invalid;
   }
 
   public onSubmit(data): void {

@@ -1,3 +1,5 @@
+$border-style: 1px solid #30b6dd;
+
 .field-label {
   display: flex;
   justify-content: space-between;
@@ -22,8 +24,38 @@
 }
 
 .clip-text {
-  width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+input.input {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #d9dbe3;
+  padding: 0 10px;
+  margin: .25em 0;
+  height: 45px;
+
+  &::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
+  }
+  &::-webkit-calendar-picker-indicator {
+    margin-left: 5px;
+  }
+
+  &:focus {
+    outline: none;
+    border: $border-style;
+  }
+
+  &:hover {
+    outline: none;
+    border: $border-style;
+  }
+}
+
+.form-field {
+  margin-bottom: 16px;
 }

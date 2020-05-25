@@ -19,13 +19,11 @@ export class ApiService {
   }
 
   getPage<T>(url: string, page): Observable<T> {
-    return this.http.get<T>(`${this.getFullUrl(url)}?page=${page}&limit=10`);
+    return this.get<T>(`${url}?page=${page}&limit=10`);
   }
 
-  findByWord<T>(url: string, word: string, page: number): Observable<T> {
-    return this.http.get<T>(
-      `${this.getFullUrl(url)}?page=${page}&limit=10&word=${word}`
-    );
+  searchPage<T>(url: string, word: string, page: number): Observable<T> {
+    return this.get(`${url}?page=${page}&limit=10&word=${word}`);
   }
 
   put<T>(url: string, item: any): Observable<T> {

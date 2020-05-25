@@ -3,56 +3,73 @@
   <form [formGroup]="courseForm" (ngSubmit)="onSubmit(courseForm.value)" class="course-editor__content">
     <div class="field-label">
       <label for="title">Title:</label>
+      <mat-error *ngIf="isFieldInvalid('title', 'required')">
+        Please enter description
+      </mat-error>
+      <mat-error *ngIf="isFieldInvalid('title', 'maxlength')">
+        Max available length is 50
+      </mat-error>
       <span>*required</span>
     </div>
     <mat-form-field appearance="outline" class="course-editor__input">
-      <input matInput id="title" formControlName="title" autocomplete="off" placeholder="Add title" [errorStateMatcher]="matcher">
-      <mat-error *ngIf="isFieldValid('title')">
-        Please enter title
-      </mat-error>
+      <input matInput id="title" formControlName="title" autocomplete="off" placeholder="Add title">
     </mat-form-field>
     <div class="field-label">
       <label for="description">Description:</label>
+      <mat-error *ngIf="isFieldInvalid('description', 'required')">
+        Please enter description
+      </mat-error>
+      <mat-error *ngIf="isFieldInvalid('description', 'maxlength')">
+        Max available length is 500
+      </mat-error>
       <span>*required</span>
     </div>
     <mat-form-field appearance="outline" class="course-editor__input">
-      <textarea matInput id="description" rows="5" placeholder="Add description" formControlName="description" [errorStateMatcher]="matcher"></textarea>
-      <mat-error *ngIf="isFieldValid('description')">
-        Please enter description
-      </mat-error>
+      <textarea matInput id="description" rows="5" placeholder="Add description" formControlName="description"></textarea>
     </mat-form-field>
-    <div class="course-editor__column-s">
+    <div class="form-field course-editor__column-s">
       <div class="field-label">
         <label for="duration">Duration:</label>
+        <mat-error *ngIf="isFieldInvalid('duration')">
+          Please enter valid duration
+        </mat-error>
         <span>*required</span>
       </div>
-      <mat-form-field appearance="outline" class="course-editor__input">
-        <input matInput id="duration" type="number" placeholder="minutes" formControlName="duration" [errorStateMatcher]="matcher" autocomplete="off">
-        <mat-error *ngIf="isFieldValid('duration')">
-          Please enter positive duration
-        </mat-error>
-      </mat-form-field>
+      <agmp-number-input formControlName="duration" [class.invalid]="isFieldInvalid('duration')"></agmp-number-input>
     </div>
-    <div class="course-editor__column-s">
+    <div class="form-field course-editor__column-s">
       <div class="field-label">
-        <label for="date">Date:</label>
+        <label for="creationDate">Date:</label>
+        <mat-error *ngIf="isFieldInvalid('creationDate')">
+          Please enter valid date
+        </mat-error>
         <span>*required</span>
       </div>
-      <mat-form-field appearance="outline" class="course-editor__input" (click)="picker.open()">
-        <input matInput readonly id="date" [matDatepicker]="picker" placeholder="dd/mm/yyyy" formControlName="creationDate" [errorStateMatcher]="matcher">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="isFieldValid('creationDate')">
-          Please enter creation date
+      <agmp-date-input formControlName="creationDate" [class.invalid]="isFieldInvalid('creationDate')"></agmp-date-input>
+    </div>
+    <div>
+      <div class="field-label">
+        <label>Authors:</label>
+        <mat-error *ngIf="isFieldInvalid('authors')">
+          Please enter at least one author
         </mat-error>
-      </mat-form-field>
+        <span>*required</span>
+      </div>
+      <agmp-tag-input
+        formControlName="authors"
+        (add)="addAuthor($event)"
+        (remove)="removeAuthor($event)"
+        [search]="searchAuthors"
+        [dataMapping]="dataMapping"
+        [class.invalid]="isFieldInvalid('authors')"
+        placeholder="Search"></agmp-tag-input>
     </div>
 
     <mat-card-footer>
       <a mat-button routerLink="/courses" class="btn big gray">
         Cancel
       </a>
-      <button mat-button type="submit" class="btn big green course-editor__pad-btn">
+      <button mat-button type="submit" [disabled]="courseForm.invalid" class="btn big green course-editor__pad-btn">
         Save
       </button>
     </mat-card-footer>

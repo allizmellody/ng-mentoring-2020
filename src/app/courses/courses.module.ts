@@ -18,6 +18,7 @@ import { CourseEditorComponent } from './course-editor/course-editor.component';
 import { StatusShadowDirective } from './course/status-shadow.directive';
 import { DurationPipe } from './course/duration.pipe';
 import { OrderByPipe } from './order-by.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { OrderByPipe } from './order-by.pipe';
     MatDatepickerModule,
     MatMomentDateModule,
     CoursesRoutingModule,
+    SharedModule,
   ],
 })
 export class CoursesModule {}
