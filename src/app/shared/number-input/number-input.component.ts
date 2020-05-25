@@ -1,11 +1,10 @@
-import { AfterViewInit, Component, forwardRef } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
-  ControlValueAccessor,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { BaseValueAccessorDirective } from '../base-value-accessor/base-value-accessor.directive';
+import { BaseValueAccessor } from '../base-value-accessor/base-value-accessor';
 
 const NUMBER_REGEX = /^[0-9]+$/;
 
@@ -29,8 +28,7 @@ const NUMBER_REGEX = /^[0-9]+$/;
     },
   ],
 })
-export class NumberInputComponent extends BaseValueAccessorDirective
-  implements ControlValueAccessor, AfterViewInit {
+export class NumberInputComponent extends BaseValueAccessor {
   constructor() {
     super();
   }

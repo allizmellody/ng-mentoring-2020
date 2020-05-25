@@ -1,12 +1,11 @@
-import { AfterViewInit, Component, forwardRef } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
-  ControlValueAccessor,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { BaseValueAccessorDirective } from '../base-value-accessor/base-value-accessor.directive';
 import moment from 'moment';
+import { BaseValueAccessor } from '../base-value-accessor/base-value-accessor';
 
 const DATE_REGEX = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
 
@@ -30,8 +29,7 @@ const DATE_REGEX = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
     },
   ],
 })
-export class DateInputComponent extends BaseValueAccessorDirective
-  implements ControlValueAccessor, AfterViewInit {
+export class DateInputComponent extends BaseValueAccessor {
   constructor() {
     super();
   }

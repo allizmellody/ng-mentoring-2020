@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  ControlValueAccessor,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
@@ -21,6 +20,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AutoCompleteRefDirective } from './autocomplete.directive';
+import { BaseValueAccessor } from '../base-value-accessor/base-value-accessor';
 
 @UntilDestroy()
 @Component({
@@ -43,7 +43,8 @@ import { AutoCompleteRefDirective } from './autocomplete.directive';
     },
   ],
 })
-export class TagInputComponent implements AfterViewInit, ControlValueAccessor {
+export class TagInputComponent extends BaseValueAccessor
+  implements AfterViewInit {
   @ViewChild(AutoCompleteRefDirective) input: AutoCompleteRefDirective;
   @ViewChildren('element') elements: QueryList<ElementRef>;
   @ViewChild('inputRef') inputRef: ElementRef;
@@ -58,18 +59,12 @@ export class TagInputComponent implements AfterViewInit, ControlValueAccessor {
   public query: string;
   public selectedIndex = 0;
 
-  onChange(_: any) {}
-
-  writeValue(value: any) {
+  writeValue(value: any): void {
     this.value = value;
-    this.onChange(this.value);
+    this.delegatedMethodCalls.next((valueAccessor) =>
+      valueAccessor.writeValue(value)
+    );
   }
-
-  registerOnChange(fn) {
-    this.onChange = fn;
-  }
-
-  registerOnTouched() {}
 
   @HostListener('document:click', ['$event'])
   clickedOutside(): void {
@@ -126,7 +121,6 @@ export class TagInputComponent implements AfterViewInit, ControlValueAccessor {
     this.results = [];
     this.selectedIndex = 0;
     this.input.hasResults = false;
-    this.inputRef.nativeElement.value = '';
   }
 
   public selectResult(result: any): void {

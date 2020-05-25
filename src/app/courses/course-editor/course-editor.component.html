@@ -3,8 +3,11 @@
   <form [formGroup]="courseForm" (ngSubmit)="onSubmit(courseForm.value)" class="course-editor__content">
     <div class="field-label">
       <label for="title">Title:</label>
-      <mat-error *ngIf="isFieldInvalid('title')">
+      <mat-error *ngIf="isFieldInvalid('title', 'required')">
         Please enter description
+      </mat-error>
+      <mat-error *ngIf="isFieldInvalid('title', 'maxlength')">
+        Max available length is 50
       </mat-error>
       <span>*required</span>
     </div>
@@ -13,8 +16,11 @@
     </mat-form-field>
     <div class="field-label">
       <label for="description">Description:</label>
-      <mat-error *ngIf="isFieldInvalid('description')">
+      <mat-error *ngIf="isFieldInvalid('description', 'required')">
         Please enter description
+      </mat-error>
+      <mat-error *ngIf="isFieldInvalid('description', 'maxlength')">
+        Max available length is 500
       </mat-error>
       <span>*required</span>
     </div>
@@ -29,7 +35,7 @@
         </mat-error>
         <span>*required</span>
       </div>
-      <agmp-number-input formControlName="duration" [ngClass]="{'invalid': isFieldInvalid('duration')}"></agmp-number-input>
+      <agmp-number-input formControlName="duration" [class.invalid]="isFieldInvalid('duration')"></agmp-number-input>
     </div>
     <div class="form-field course-editor__column-s">
       <div class="field-label">
@@ -39,7 +45,7 @@
         </mat-error>
         <span>*required</span>
       </div>
-      <agmp-date-input formControlName="creationDate" [ngClass]="{'invalid': isFieldInvalid('creationDate')}"></agmp-date-input>
+      <agmp-date-input formControlName="creationDate" [class.invalid]="isFieldInvalid('creationDate')"></agmp-date-input>
     </div>
     <div>
       <div class="field-label">
@@ -55,7 +61,7 @@
         (remove)="removeAuthor($event)"
         [search]="searchAuthors"
         [dataMapping]="dataMapping"
-        [ngClass]="{'invalid': isFieldInvalid('authors')}"
+        [class.invalid]="isFieldInvalid('authors')"
         placeholder="Search"></agmp-tag-input>
     </div>
 

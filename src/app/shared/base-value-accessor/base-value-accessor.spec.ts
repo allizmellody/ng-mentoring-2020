@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BaseValueAccessorComponent } from './base-value-accessor.directive';
+import { BaseValueAccessorComponent } from './base-value-accessor';
 
 describe('BaseValueAccessorComponent', () => {
   let component: BaseValueAccessorComponent;

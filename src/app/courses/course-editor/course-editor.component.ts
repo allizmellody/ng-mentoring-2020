@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ICourse } from '../shared/course.model';
 import { CHANGE_DETECTOR } from '../../shared/can-deactivate.guard';
@@ -82,8 +83,6 @@ export class CourseEditorComponent implements OnInit {
   }
 
   private updateAuthors(value: IAuthor[]): void {
-    console.log(123);
-
     if (!this.authors.touched) {
       this.authors.markAsTouched();
     }
@@ -98,7 +97,6 @@ export class CourseEditorComponent implements OnInit {
   public removeAuthor(idx: number): void {
     const authors = this.authors.value;
 
-    console.log(123);
     if (authors[idx]) {
       authors.splice(idx, 1);
       this.updateAuthors(authors);
@@ -107,7 +105,15 @@ export class CourseEditorComponent implements OnInit {
 
   private getAuthors(query: string): Observable<IAuthor[]> {
     this.loaderService.prevented = true;
-    return this.authorsService.searchByWord(query);
+    return this.authorsService.searchByWord(query).pipe(
+      map((v) => {
+        return v.filter(({ id }: IAuthor) => {
+          return !this.authors.value.some(
+            ({ id: selectedId }: IAuthor) => selectedId === id
+          );
+        });
+      })
+    );
   }
 
   public searchAuthors = (query: string): Observable<IAuthor[]> =>
@@ -117,10 +123,11 @@ export class CourseEditorComponent implements OnInit {
     return obj.name;
   }
 
-  public isFieldInvalid(fieldName: string): boolean {
+  public isFieldInvalid(fieldName: string, error?: string): boolean {
     const field = this.courseForm.get(fieldName);
+    const invalid = error ? field.errors?.[error] : field.invalid;
 
-    return field.touched && field.invalid;
+    return field.touched && invalid;
   }
 
   public onSubmit(data): void {

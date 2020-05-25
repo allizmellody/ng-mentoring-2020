@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 import { DialogComponent } from './dialog/dialog.component';
 import { LoaderComponent } from './loader/loader.component';
@@ -16,8 +17,6 @@ import { NumberInputComponent } from './number-input/number-input.component';
 import { AutoCompleteRefDirective } from './tag-input/autocomplete.directive';
 import { HighlightPipe } from './tag-input/highlight.pipe';
 import { TagInputComponent } from './tag-input/tag-input.component';
-import { MatIconModule } from '@angular/material/icon';
-import { BaseValueAccessorDirective } from './base-value-accessor/base-value-accessor.directive';
 
 @NgModule({
   declarations: [
@@ -28,7 +27,6 @@ import { BaseValueAccessorDirective } from './base-value-accessor/base-value-acc
     HighlightPipe,
     TagInputComponent,
     AutoCompleteRefDirective,
-    BaseValueAccessorDirective,
   ],
   imports: [
     CommonModule,
